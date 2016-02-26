@@ -5,8 +5,9 @@
 //
 
 import UIKit
+import AVFoundation
 
-class ViewController: UITableViewController {
+class ViewController: UITableViewController, AVAudioRecorderDelegate {
     
     var seleccion : Int = 0
     var edificios = ["ML","SD","W"]
@@ -14,12 +15,56 @@ class ViewController: UITableViewController {
     var imagenes = ["ml","sd","w"]
     var horarios = [Hora]()
     
+    //Grabar audio
+    var recordButton: UIButton!
+    var recordingSession: AVAudioSession!
+    var audioRecorder: AVAudioRecorder!
+    
     override func viewDidLoad() {
+        print("hola view")
         for j in 0...2{
             var hora : Hora = Hora (edificio: edificios[j], ruido: j, fecha: NSDate())
             //swiftBlogs[0].appendString(j.ingrediente.nombre as String)
             horarios.append(hora)
         }
+        
+        recordingSession = AVAudioSession.sharedInstance()
+        
+        //Pedir permisos para grabar audio
+        do {
+            try recordingSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
+            try recordingSession.setActive(true)
+            recordingSession.requestRecordPermission() { [unowned self] (allowed: Bool) -> Void in
+                dispatch_async(dispatch_get_main_queue()) {
+                    if allowed {
+                        print("antes")
+                        //self.loadRecordingUI()
+                        self.startRecording()
+                        
+                        
+                        let delay = 9 * Double(NSEC_PER_SEC)
+                        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+                        dispatch_after(time, dispatch_get_main_queue()) {
+                            
+                            
+                            self.audioRecorder.updateMeters()
+                            
+                            print(String(self.audioRecorder.peakPowerForChannel(0)))//-160 to 0
+                            
+                            self.finishRecording(success: true)
+                            print("despues")
+                        }
+                    } else {
+                        // failed to record!
+                        print("no permiso")
+                    }
+                }
+            }
+        } catch {
+            // failed to record!
+        }
+        
+        
         super.viewDidLoad()
     }
     
@@ -59,6 +104,72 @@ class ViewController: UITableViewController {
         
         return cell
     }
+    
+    func loadRecordingUI() {
+        recordButton = UIButton(frame: CGRect(x: 64, y: 64, width: 128, height: 64))
+        recordButton.setTitle("Tap to Record", forState: .Normal)
+        recordButton.titleLabel?.font = UIFont.preferredFontForTextStyle(UIFontTextStyleTitle1)
+        recordButton.addTarget(self, action: "recordTapped", forControlEvents: .TouchUpInside)
+        view.addSubview(recordButton)
+    }
+    
+    func getDocumentsDirectory() -> String {
+        let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
+        let documentsDirectory = paths[0]
+        return documentsDirectory
+    }
+    
+    func startRecording() {
+        let audioFilename = getDocumentsDirectory() + "/recording.m4a"
+        print(audioFilename)
+            //.stringByAppendingPathComponent("recording.m4a")
+        let audioURL = NSURL(fileURLWithPath: audioFilename)
+        
+        let settings = [
+            AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
+            AVSampleRateKey: 12000.0,
+            AVNumberOfChannelsKey: 1 as NSNumber,
+            AVEncoderAudioQualityKey: AVAudioQuality.High.rawValue
+        ]
+        
+        do {
+            audioRecorder = try AVAudioRecorder(URL: audioURL, settings: settings)
+            audioRecorder.meteringEnabled = true
+            audioRecorder.delegate = self
+            audioRecorder.record()
+            
+            //recordButton.setTitle("Tap to Stop", forState: .Normal)
+        } catch {
+            finishRecording(success: false)
+        }
+    }
+    
+    func finishRecording(success success: Bool) {
+        audioRecorder.stop()
+        audioRecorder = nil
+        
+        if success {
+            //recordButton.setTitle("Tap to Re-record", forState: .Normal)
+        } else {
+            //recordButton.setTitle("Tap to Record", forState: .Normal)
+            // recording failed :(
+        }
+    }
+    
+    func recordTapped() {
+        if audioRecorder == nil {
+            startRecording()
+        } else {
+            finishRecording(success: true)
+        }
+    }
+    
+    func audioRecorderDidFinishRecording(recorder: AVAudioRecorder, successfully flag: Bool) {
+        if !flag {
+            finishRecording(success: false)
+        }
+    }
+
     
     /*override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "VerIngrediente" {
