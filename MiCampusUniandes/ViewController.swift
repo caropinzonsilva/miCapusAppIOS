@@ -6,8 +6,9 @@
 
 import UIKit
 import AVFoundation
+import CoreLocation
 
-class ViewController: UITableViewController, AVAudioRecorderDelegate {
+class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocationManagerDelegate {
     
     var seleccion : Int = 0
     var edificios = ["ML","SD","W"]
@@ -19,6 +20,11 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate {
     var recordButton: UIButton!
     var recordingSession: AVAudioSession!
     var audioRecorder: AVAudioRecorder!
+    
+    //Bluetooth
+    let locationManager = CLLocationManager()
+    let region = CLBeaconRegion(proximityUUID: NSUUID(UUIDString: "92AB49BE-4127-42F4-B532-90FAF1E26491")!, identifier: "Estimotes")
+    var listaBeacons = [CLBeacon]()
     
     override func viewDidLoad() {
         print("hola view")
@@ -37,23 +43,9 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate {
             recordingSession.requestRecordPermission() { [unowned self] (allowed: Bool) -> Void in
                 dispatch_async(dispatch_get_main_queue()) {
                     if allowed {
-                        print("antes")
-                        //self.loadRecordingUI()
-                        self.startRecording()
                         
+                        self.infinito()
                         
-                        let delay = 9 * Double(NSEC_PER_SEC)
-                        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
-                        dispatch_after(time, dispatch_get_main_queue()) {
-                            
-                            
-                            self.audioRecorder.updateMeters()
-                            
-                            print(String(self.audioRecorder.peakPowerForChannel(0)))//-160 to 0
-                            
-                            self.finishRecording(success: true)
-                            print("despues")
-                        }
                     } else {
                         // failed to record!
                         print("no permiso")
@@ -64,8 +56,14 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate {
             // failed to record!
         }
         
-        
         super.viewDidLoad()
+        
+        //Pedir permisos bluetooth
+        locationManager.delegate = self
+        if (CLLocationManager.authorizationStatus() != CLAuthorizationStatus.AuthorizedWhenInUse) {
+            locationManager.requestWhenInUseAuthorization()
+        }
+        locationManager.startRangingBeaconsInRegion(region)
     }
     
     override func didReceiveMemoryWarning() {
@@ -121,7 +119,6 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate {
     
     func startRecording() {
         let audioFilename = getDocumentsDirectory() + "/recording.m4a"
-        print(audioFilename)
             //.stringByAppendingPathComponent("recording.m4a")
         let audioURL = NSURL(fileURLWithPath: audioFilename)
         
@@ -134,6 +131,8 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate {
         
         do {
             audioRecorder = try AVAudioRecorder(URL: audioURL, settings: settings)
+            print("audioRec")
+            print(audioRecorder)
             audioRecorder.meteringEnabled = true
             audioRecorder.delegate = self
             audioRecorder.record()
@@ -169,6 +168,41 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate {
             finishRecording(success: false)
         }
     }
+    
+    func infinito() {
+        print("antes")
+        //self.loadRecordingUI()
+        self.startRecording()
+        
+        print("inside while")
+        let delay = 2 * Double(NSEC_PER_SEC)
+        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+        dispatch_after(time, dispatch_get_main_queue()) {
+            
+            
+            self.audioRecorder.updateMeters()
+            
+            var x = self.audioRecorder.averagePowerForChannel(0)
+            if (x > 0) {
+                x = 90
+            }
+            else {
+                x = (x + 160)/160 * 90
+            }
+            print(x)
+            print(self.listaBeacons)
+            
+            self.finishRecording(success: true)
+            print("despues")
+            self.infinito()
+        }
+    }
+    
+    func locationManager(manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], inRegion region: CLBeaconRegion) {
+        listaBeacons = beacons
+    }
+    
+    
 
     
     /*override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
