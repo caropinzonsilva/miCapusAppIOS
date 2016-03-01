@@ -13,8 +13,10 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
     var seleccion : Int = 0
     var edificios = ["ML","SD","W"]
     var sonidos = ["1","2","3"]
-    var imagenes = ["ml","sd","w"]
-    var horarios = [Hora]()
+    var sugerenciasDia = [SugerenciaDia]()
+    var registros = [Registro]()
+    var diasSemanaArray = ["D","L","M","I","J","V","S"]
+    var diaSemana: Int = 0
     
     //Grabar audio
     var recordButton: UIButton!
@@ -27,11 +29,47 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
     var listaBeacons = [CLBeacon]()
     
     override func viewDidLoad() {
-        print("hola view")
+        
+        //Background de grabación de Audio
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            //print("AVAudioSession Category Playback OK")
+            do {
+                try AVAudioSession.sharedInstance().setActive(true)
+                //print("AVAudioSession is Active")
+            } catch let error as NSError {
+                print(error.localizedDescription)
+            }
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+        
+        //Preguntar dia
+        let myCalendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)
+        let myComponent = myCalendar?.components(.Weekday, fromDate: NSDate())
+        diaSemana = (myComponent?.weekday)!
+        
+        
+        let registrosCargados = cargarRegistros(diasSemanaArray[diaSemana])
+        print(registrosCargados)
+        if registrosCargados != nil {
+            print("registros cargados")
+            registros = registrosCargados!
+            //let r = Registro(ruido: 24, dia: diaSemana!, hora: 5, mayor: 10, minor: 5)
+            //registros.append(r)
+            //registros = []
+            salvarRegistro(diasSemanaArray[diaSemana])
+        }
+        else {
+            print("registros no cargados")
+            salvarRegistro(diasSemanaArray[diaSemana])
+        }
+        
+        
+        //Inicializar las sugerencias del día
         for j in 0...2{
-            var hora : Hora = Hora (edificio: edificios[j], ruido: j, fecha: NSDate())
-            //swiftBlogs[0].appendString(j.ingrediente.nombre as String)
-            horarios.append(hora)
+            let sugerenciaDia: SugerenciaDia = SugerenciaDia(edificio: edificios[j], ruido: j, fecha: NSDate())
+            sugerenciasDia.append(sugerenciaDia)
         }
         
         recordingSession = AVAudioSession.sharedInstance()
@@ -44,7 +82,7 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
                 dispatch_async(dispatch_get_main_queue()) {
                     if allowed {
                         
-                        self.infinito()
+                        self.tomarDatos()
                         
                     } else {
                         // failed to record!
@@ -61,9 +99,15 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
         //Pedir permisos bluetooth
         locationManager.delegate = self
         if (CLLocationManager.authorizationStatus() != CLAuthorizationStatus.AuthorizedWhenInUse) {
-            locationManager.requestWhenInUseAuthorization()
+            locationManager.requestAlwaysAuthorization()
         }
+        locationManager.pausesLocationUpdatesAutomatically = false
+        locationManager.allowsBackgroundLocationUpdates = true
+        locationManager.startMonitoringForRegion(region)
+        locationManager.requestStateForRegion(region)
         locationManager.startRangingBeaconsInRegion(region)
+        
+        print(UIApplication.sharedApplication().backgroundRefreshStatus)
     }
     
     override func didReceiveMemoryWarning() {
@@ -78,17 +122,17 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return horarios.count
+        return sugerenciasDia.count
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell : HoraCell = tableView.dequeueReusableCellWithIdentifier("HorarioCell", forIndexPath: indexPath) as! HoraCell
         let row = indexPath.row
-        cell.txtEdificio.text = horarios[row].edificio
-        cell.txtSonido.text = String(horarios[row].ruido)
+        cell.txtEdificio.text = sugerenciasDia[row].edificio
+        cell.txtSonido.text = String(sugerenciasDia[row].ruido)
         
-        let imageName = horarios[row].edificio
+        let imageName = sugerenciasDia[row].edificio
         var image : UIImage = UIImage(named: imageName)!
         cell.imgEdificio.image = image
         
@@ -96,7 +140,7 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateStyle = NSDateFormatterStyle.ShortStyle
         dateFormatter.timeStyle = NSDateFormatterStyle.ShortStyle
-        let d = horarios[row].fecha
+        let d = sugerenciasDia[row].fecha
         cell.txtHora.text = dateFormatter.stringFromDate(d)
         
         
@@ -169,13 +213,13 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
         }
     }
     
-    func infinito() {
+    func tomarDatos() {
         print("antes")
         //self.loadRecordingUI()
         self.startRecording()
         
         print("inside while")
-        let delay = 2 * Double(NSEC_PER_SEC)
+        let delay = 10 * Double(NSEC_PER_SEC)//Delay de tiempo de grabacion
         let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
         dispatch_after(time, dispatch_get_main_queue()) {
             
@@ -194,12 +238,34 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
             
             self.finishRecording(success: true)
             print("despues")
-            self.infinito()
+            
+            var mayor = -1
+            var minor = -1
+            if self.listaBeacons.count > 0 {
+                var beacon = self.listaBeacons[0] as CLBeacon
+                if beacon.proximity.rawValue != 0 {
+                    mayor = beacon.major.integerValue
+                    minor = beacon.minor.integerValue
+                }
+            }
+            let r = Registro(ruido: Int(x), dia: self.diaSemana, hora: 5, mayor: mayor, minor: minor)
+            self.registros.append(r)
+            
+            self.salvarRegistro(self.diasSemanaArray[self.diaSemana])
         }
     }
     
     func locationManager(manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], inRegion region: CLBeaconRegion) {
         listaBeacons = beacons
+        //print(listaBeacons)
+    }
+    
+    func locationManager(manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        print("Entering region")
+    }
+    
+    func locationManager(manager: CLLocationManager, didExitRegion region: CLRegion) {
+        print("Exit region")
     }
     
     
@@ -217,5 +283,17 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
         }
         
     }*/
+    
+    // MARK: NSCoding
+    func salvarRegistro(dia: String) {
+        let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(registros, toFile: Registro.ArchiveURL.path! + dia)
+        if !isSuccessfulSave {
+            print("Error guardando registros...")
+        }
+    }
+    
+    func cargarRegistros(dia: String) -> [Registro]? {
+        return NSKeyedUnarchiver.unarchiveObjectWithFile(Registro.ArchiveURL.path! + dia) as? [Registro]
+    }
     
 }
