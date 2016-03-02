@@ -18,6 +18,8 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
     var diasSemanaArray = ["D","L","M","I","J","V","S"]
     var diaSemana: Int = 0
     var hora: Int = 0
+    var mayorEdificios = ["SD - Piso 7", "SD - Piso 8", "SD - Piso 9", "SD - Piso 10", "ML - Sótano 1", "ML - Piso 1", "ML - Piso 2", "ML - Piso 3", "ML - Piso 4", "ML - Piso 5", "ML - Piso 6", "ML - Piso 7", "ML - Piso 8", "W Sótano 1", "W Piso 1", "W Piso 2", "W Piso 3", "W Piso 4", "W Piso 5", "W Piso 6"]
+    var imagenesMayorEdificio = ["SD", "SD", "SD", "SD", "ML", "ML", "ML", "ML", "ML", "ML", "ML", "ML", "ML", "W", "W", "LL", "W", "W", "W", "W"]
     
     //Grabar audio
     var recordButton: UIButton!
@@ -30,8 +32,6 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
     var listaBeacons = [CLBeacon]()
     
     override func viewDidLoad() {
-        
-        cacularSugerenciaLugares(0,ruido: 0)
         
         //Background de grabación de Audio
         do {
@@ -66,11 +66,36 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
             salvarRegistro(diasSemanaArray[diaSemana])
         }
         
+        var sugerenciasProximasHoras: [(Int,Int,Int,Int)] = []
+        
+        for i in 0...5 {
+            print("hora:")
+            print(hora + i)
+            let ruidoPreferencia = calcularPreferenciasHora(hora + i)
+            print("ruidoPreferencia")
+            print(ruidoPreferencia)
+            let sugerencia = cacularSugerenciaLugares(hora + i, ruido: ruidoPreferencia*10)
+            print(sugerencia)
+            sugerenciasProximasHoras.append(sugerencia[0])
+            
+        }
+        print("sugerencias")
+        print(sugerenciasProximasHoras)
+        
         
         //Inicializar las sugerencias del día
-        for j in 0...2{
-            let sugerenciaDia: SugerenciaDia = SugerenciaDia(edificio: edificios[j], ruido: j, fecha: NSDate())
-            sugerenciasDia.append(sugerenciaDia)
+        for sugerencia in sugerenciasProximasHoras {
+            if sugerencia.3 < 6 || sugerencia.3 > 19 {
+                let sugerenciaDia: SugerenciaDia = SugerenciaDia(edificio: "Universidad cerrada", ruido: 0, hora: sugerencia.3, mayor: -1, fecha: NSDate())
+                sugerenciasDia.append(sugerenciaDia)
+            }
+            //Universidad cerrada
+            else {
+                let sugerenciaDia: SugerenciaDia = SugerenciaDia(edificio: mayorEdificios[sugerencia.0], ruido: sugerencia.2, hora: sugerencia.3, mayor: sugerencia.0, fecha: NSDate())
+                sugerenciasDia.append(sugerenciaDia)
+            }
+            //let sugerenciaDia: SugerenciaDia = SugerenciaDia(edificio: mayorEdificios[sugerencia.0], ruido: sugerencia.2, fecha: NSDate())
+            //sugerenciasDia.append(sugerenciaDia)
         }
         
         recordingSession = AVAudioSession.sharedInstance()
@@ -133,7 +158,10 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
         cell.txtEdificio.text = sugerenciasDia[row].edificio
         cell.txtSonido.text = String(sugerenciasDia[row].ruido)
         
-        let imageName = sugerenciasDia[row].edificio
+        var imageName = "sleep"
+        if sugerenciasDia[row].mayor != -1 {
+            imageName = imagenesMayorEdificio[sugerenciasDia[row].mayor]
+        }
         var image : UIImage = UIImage(named: imageName)!
         cell.imgEdificio.image = image
         
@@ -141,8 +169,7 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateStyle = NSDateFormatterStyle.ShortStyle
         dateFormatter.timeStyle = NSDateFormatterStyle.ShortStyle
-        let d = sugerenciasDia[row].fecha
-        cell.txtHora.text = dateFormatter.stringFromDate(d)
+        cell.txtHora.text = "\(sugerenciasDia[row].hora)" + ":00"
         
         
         return cell
@@ -310,10 +337,20 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
     }
     
     //Calculo de sugerencia de lugares, retorna arreglo de Major de beacons
-    func cacularSugerenciaLugares (hora: Int, ruido: Int) {
-        var myArray = [ (1,1), (1,2), (2,1), (2,2)]
-        myArray = myArray.sort{ $0.1 != $1.1 ? $0.1 > $1.1 : $0.0 < $1.0 }
-        print(myArray)
+    func cacularSugerenciaLugares (hora: Int, ruido: Int) -> [(Int,Int,Int,Int)] {
+        var lugaresOcurrencias: [(Int,Int,Int,Int)] = []
+        for i in 0...20 {
+            lugaresOcurrencias.append((i,0,ruido,hora))
+        }
+        for registro in registros {
+            if registro.hora == hora && Int(registro.ruido / 10)*10 == ruido {
+                if (registro.mayor != -1) {
+                   lugaresOcurrencias[registro.mayor].1 += 1
+                }
+            }
+        }
+        lugaresOcurrencias = lugaresOcurrencias.sort{ $0.1 != $1.1 ? $0.1 > $1.1 : $0.0 < $1.0 }
+        return lugaresOcurrencias
         
     }
     

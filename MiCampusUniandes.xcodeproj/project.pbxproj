@@ -20,7 +20,7 @@
 		EEB5210A1C7D37D100B77BB0 /* MiCampusUniandesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEB521091C7D37D100B77BB0 /* MiCampusUniandesTests.swift */; };
 		EEB521151C7D37D100B77BB0 /* MiCampusUniandesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEB521141C7D37D100B77BB0 /* MiCampusUniandesUITests.swift */; };
 		EEB521611C7D3F3500B77BB0 /* HoraCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEB521601C7D3F3500B77BB0 /* HoraCell.swift */; };
-		EEB521661C7D406700B77BB0 /* Hora.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEB521651C7D406700B77BB0 /* Hora.swift */; };
+		EEB8D0CA1C87882C0061719D /* sleep.png in Resources */ = {isa = PBXBuildFile; fileRef = EEB8D0C91C87882C0061719D /* sleep.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,7 +60,7 @@
 		EEB521141C7D37D100B77BB0 /* MiCampusUniandesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiCampusUniandesUITests.swift; sourceTree = "<group>"; };
 		EEB521161C7D37D100B77BB0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EEB521601C7D3F3500B77BB0 /* HoraCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HoraCell.swift; sourceTree = "<group>"; };
-		EEB521651C7D406700B77BB0 /* Hora.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hora.swift; sourceTree = "<group>"; };
+		EEB8D0C91C87882C0061719D /* sleep.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sleep.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,7 +152,6 @@
 		EEB521631C7D402E00B77BB0 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				EEB521651C7D406700B77BB0 /* Hora.swift */,
 				EE84B0871C8634F500995A0E /* Registro.swift */,
 				EE84B08B1C863EF600995A0E /* SugerenciaDia.swift */,
 			);
@@ -165,6 +164,7 @@
 				EE4F69201C8113C500844F05 /* W.png */,
 				EE84B0921C8645A500995A0E /* ML.png */,
 				EE82F7F71C7FEB60008DB006 /* SD.png */,
+				EEB8D0C91C87882C0061719D /* sleep.png */,
 				EEB520F61C7D37D100B77BB0 /* ViewController.swift */,
 			);
 			name = ViewControllers;
@@ -279,6 +279,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EEB8D0CA1C87882C0061719D /* sleep.png in Resources */,
 				EEB520FF1C7D37D100B77BB0 /* LaunchScreen.storyboard in Resources */,
 				EE84B0931C8645A500995A0E /* ML.png in Resources */,
 				EEB520FC1C7D37D100B77BB0 /* Assets.xcassets in Resources */,
@@ -314,7 +315,6 @@
 				EE84B0881C8634F500995A0E /* Registro.swift in Sources */,
 				EEB521611C7D3F3500B77BB0 /* HoraCell.swift in Sources */,
 				EEB520F51C7D37D100B77BB0 /* AppDelegate.swift in Sources */,
-				EEB521661C7D406700B77BB0 /* Hora.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,11 +9,15 @@ import UIKit
 class SugerenciaDia: NSObject {
     let edificio: String
     let ruido:Int
+    let hora: Int
+    let mayor: Int
     let fecha:NSDate
     
-    init(edificio: String, ruido: Int, fecha: NSDate) {
+    init(edificio: String, ruido: Int, hora: Int, mayor: Int, fecha: NSDate) {
         self.edificio = edificio
         self.ruido = ruido
+        self.hora = hora
+        self.mayor = mayor
         self.fecha = fecha
         super.init()
     }
