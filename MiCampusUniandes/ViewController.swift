@@ -17,6 +17,7 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
     var registros = [Registro]()
     var diasSemanaArray = ["D","L","M","I","J","V","S"]
     var diaSemana: Int = 0
+    var hora: Int = 0
     
     //Grabar audio
     var recordButton: UIButton!
@@ -29,6 +30,8 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
     var listaBeacons = [CLBeacon]()
     
     override func viewDidLoad() {
+        
+        cacularSugerenciaLugares(0,ruido: 0)
         
         //Background de grabación de Audio
         do {
@@ -47,7 +50,9 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
         //Preguntar dia
         let myCalendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)
         let myComponent = myCalendar?.components(.Weekday, fromDate: NSDate())
+        let hour = myCalendar?.components(.Hour, fromDate: NSDate())
         diaSemana = (myComponent?.weekday)!
+        hora = (hour?.hour)!
         
         
         let registrosCargados = cargarRegistros(diasSemanaArray[diaSemana])
@@ -55,10 +60,6 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
         if registrosCargados != nil {
             print("registros cargados")
             registros = registrosCargados!
-            //let r = Registro(ruido: 24, dia: diaSemana!, hora: 5, mayor: 10, minor: 5)
-            //registros.append(r)
-            //registros = []
-            salvarRegistro(diasSemanaArray[diaSemana])
         }
         else {
             print("registros no cargados")
@@ -248,10 +249,12 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
                     minor = beacon.minor.integerValue
                 }
             }
-            let r = Registro(ruido: Int(x), dia: self.diaSemana, hora: 5, mayor: mayor, minor: minor)
+            let r = Registro(ruido: Int(x), dia: self.diaSemana, hora: self.hora, mayor: mayor, minor: minor)
             self.registros.append(r)
             
             self.salvarRegistro(self.diasSemanaArray[self.diaSemana])
+            
+            print(self.calcularPreferenciasHora(18))
         }
     }
     
@@ -283,6 +286,36 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
         }
         
     }*/
+    
+    //Calculo de preferencias
+    func calcularPreferenciasHora(hora: Int) -> Int {
+        var cuentaRegistros = [0,0,0,0,0,0,0,0,0,0]
+        for registro in registros {
+            if registro.hora == hora {
+                var indice = Int(registro.ruido / 10)
+                cuentaRegistros[indice] += 1
+            }
+        }
+        var max = -1
+        var indiceMax = -1
+        var indice = 0
+        for cuenta in cuentaRegistros {
+            if max < cuenta {
+                max = cuenta
+                indiceMax = indice
+            }
+            indice += 1
+        }
+        return indiceMax
+    }
+    
+    //Calculo de sugerencia de lugares, retorna arreglo de Major de beacons
+    func cacularSugerenciaLugares (hora: Int, ruido: Int) {
+        var myArray = [ (1,1), (1,2), (2,1), (2,2)]
+        myArray = myArray.sort{ $0.1 != $1.1 ? $0.1 > $1.1 : $0.0 < $1.0 }
+        print(myArray)
+        
+    }
     
     // MARK: NSCoding
     func salvarRegistro(dia: String) {
