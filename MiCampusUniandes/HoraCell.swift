@@ -12,5 +12,6 @@ class HoraCell: UITableViewCell {
     @IBOutlet weak var txtEdificio: UILabel!
     @IBOutlet weak var txtSonido: UILabel!
     @IBOutlet weak var txtHora: UILabel!
+    @IBOutlet weak var txtPreferencia: UILabel!
     @IBOutlet weak var imgEdificio: UIImageView!
 }

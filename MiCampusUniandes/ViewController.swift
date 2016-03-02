@@ -11,15 +11,17 @@ import CoreLocation
 class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocationManagerDelegate {
     
     var seleccion : Int = 0
-    var edificios = ["ML","SD","W"]
+    //var edificios = ["ML","SD","W"]
     var sonidos = ["1","2","3"]
     var sugerenciasDia = [SugerenciaDia]()
     var registros = [Registro]()
     var diasSemanaArray = ["D","L","M","I","J","V","S"]
     var diaSemana: Int = 0
     var hora: Int = 0
-    var mayorEdificios = ["SD - Piso 7", "SD - Piso 8", "SD - Piso 9", "SD - Piso 10", "ML - Sótano 1", "ML - Piso 1", "ML - Piso 2", "ML - Piso 3", "ML - Piso 4", "ML - Piso 5", "ML - Piso 6", "ML - Piso 7", "ML - Piso 8", "W Sótano 1", "W Piso 1", "W Piso 2", "W Piso 3", "W Piso 4", "W Piso 5", "W Piso 6"]
-    var imagenesMayorEdificio = ["SD", "SD", "SD", "SD", "ML", "ML", "ML", "ML", "ML", "ML", "ML", "ML", "ML", "W", "W", "LL", "W", "W", "W", "W"]
+    //var mayorEdificios = ["SD - Piso 7", "SD - Piso 8", "SD - Piso 9", "SD - Piso 10", "ML - Sótano 1", "ML - Piso 1", "ML - Piso 2", "ML - Piso 3", "ML - Piso 4", "ML - Piso 5", "ML - Piso 6", "ML - Piso 7", "ML - Piso 8", "W Sótano 1", "W Piso 1", "W Piso 2", "W Piso 3", "W Piso 4", "W Piso 5", "W Piso 6"]
+    var mayorEdificios = ["SD", "ML", "W", "NA"]
+    var imagenesMayorEdificio = ["SD", "ML", "W", "NA"]
+    var nivelesRuido = ["Muy bajo", "Muy bajo", "Muy bajo", "Bajo", "Bajo", "Bajo", "Medio", "Medio", "Alto", "Muy Alto"]
     
     //Grabar audio
     var recordButton: UIButton!
@@ -60,9 +62,66 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
         if registrosCargados != nil {
             print("registros cargados")
             registros = registrosCargados!
+            /*registros = []
+                for hora in 6...20 {
+                    var ruido_r = 0
+                    if (hora <= 14) {
+                        ruido_r = 5*hora + 10
+                    }
+                    else {
+                        ruido_r = 150 - 5*hora
+                    }
+                    let r_SD = Registro(ruido: ruido_r, dia: diaSemana, hora: hora, mayor: 0, minor: 0)
+                    registros.append(r_SD)
+                    if (hora <= 14) {
+                        ruido_r = Int(5.5*Double(hora)) + 10
+                    }
+                    else {
+                        ruido_r = 145 - Int(5.5*Double(hora))
+                    }
+                    let r_ML = Registro(ruido: ruido_r, dia: diaSemana, hora: hora, mayor: 1, minor: 0)
+                    registros.append(r_ML)
+                    if (hora <= 14) {
+                        ruido_r = Int(4.4*Double(hora)) + 10
+                    }
+                    else {
+                        ruido_r = 142 - Int(4.4*Double(hora))
+                    }
+                    let r_W = Registro(ruido: ruido_r, dia: diaSemana, hora: hora, mayor: 2, minor: 0)
+                    registros.append(r_W)
+                }*/
         }
         else {
             print("registros no cargados")
+            for dia in 0...6 {
+                for hora in 6...20 {
+                    var ruido_r = 0
+                    if (hora <= 14) {
+                        ruido_r = 5*hora + 10
+                    }
+                    else {
+                        ruido_r = 150 - 5*hora
+                    }
+                    let r_SD = Registro(ruido: ruido_r, dia: dia, hora: hora, mayor: 0, minor: 0)
+                    registros.append(r_SD)
+                    if (hora <= 14) {
+                        ruido_r = Int(5.5*Double(hora)) + 10
+                    }
+                    else {
+                        ruido_r = 145 - Int(5.5*Double(hora))
+                    }
+                    let r_ML = Registro(ruido: ruido_r, dia: dia, hora: hora, mayor: 1, minor: 0)
+                    registros.append(r_ML)
+                    if (hora <= 14) {
+                        ruido_r = Int(4.4*Double(hora)) + 10
+                    }
+                    else {
+                        ruido_r = 142 - Int(4.4*Double(hora))
+                    }
+                    let r_W = Registro(ruido: ruido_r, dia: dia, hora: hora, mayor: 2, minor: 0)
+                    registros.append(r_W)
+                }
+            }
             salvarRegistro(diasSemanaArray[diaSemana])
         }
         
@@ -74,7 +133,19 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
             let ruidoPreferencia = calcularPreferenciasHora(hora + i)
             print("ruidoPreferencia")
             print(ruidoPreferencia)
-            let sugerencia = cacularSugerenciaLugares(hora + i, ruido: ruidoPreferencia*10)
+            var sugerencia = cacularSugerenciaLugares(hora + i, ruido: ruidoPreferencia*10)
+            //No encontro edificio con nivel de ruido de preferencia
+            var encontrado = sugerencia[0].1 != 0
+            var j = 0
+            /*while !encontrado {
+                j += 1
+                sugerencia = cacularSugerenciaLugares(hora + i, ruido: (ruidoPreferencia + j)*10)
+                encontrado = sugerencia[0].1 != 0
+                if !encontrado {
+                    sugerencia = cacularSugerenciaLugares(hora + i, ruido: (ruidoPreferencia - j)*10)
+                    encontrado = sugerencia[0].1 != 0
+                }
+            }*/
             print(sugerencia)
             sugerenciasProximasHoras.append(sugerencia[0])
             
@@ -86,12 +157,12 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
         //Inicializar las sugerencias del día
         for sugerencia in sugerenciasProximasHoras {
             if sugerencia.3 < 6 || sugerencia.3 > 19 {
-                let sugerenciaDia: SugerenciaDia = SugerenciaDia(edificio: "Universidad cerrada", ruido: 0, hora: sugerencia.3, mayor: -1, fecha: NSDate())
+                let sugerenciaDia: SugerenciaDia = SugerenciaDia(edificio: "Universidad cerrada", ruido: 0, hora: sugerencia.3, mayor: -1, preferencia: 0, fecha: NSDate())
                 sugerenciasDia.append(sugerenciaDia)
             }
             //Universidad cerrada
             else {
-                let sugerenciaDia: SugerenciaDia = SugerenciaDia(edificio: mayorEdificios[sugerencia.0], ruido: sugerencia.2, hora: sugerencia.3, mayor: sugerencia.0, fecha: NSDate())
+                let sugerenciaDia: SugerenciaDia = SugerenciaDia(edificio: mayorEdificios[sugerencia.0], ruido: sugerencia.2, hora: sugerencia.3, mayor: sugerencia.0, preferencia: 0, fecha: NSDate())
                 sugerenciasDia.append(sugerenciaDia)
             }
             //let sugerenciaDia: SugerenciaDia = SugerenciaDia(edificio: mayorEdificios[sugerencia.0], ruido: sugerencia.2, fecha: NSDate())
@@ -156,7 +227,7 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
         let cell : HoraCell = tableView.dequeueReusableCellWithIdentifier("HorarioCell", forIndexPath: indexPath) as! HoraCell
         let row = indexPath.row
         cell.txtEdificio.text = sugerenciasDia[row].edificio
-        cell.txtSonido.text = String(sugerenciasDia[row].ruido)
+        cell.txtSonido.text = "\(sugerenciasDia[row].ruido)dB - \(nivelesRuido[Int(sugerenciasDia[row].ruido / 10)])"
         
         var imageName = "sleep"
         if sugerenciasDia[row].mayor != -1 {
@@ -170,6 +241,8 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
         dateFormatter.dateStyle = NSDateFormatterStyle.ShortStyle
         dateFormatter.timeStyle = NSDateFormatterStyle.ShortStyle
         cell.txtHora.text = "\(sugerenciasDia[row].hora)" + ":00"
+        
+        //cell.txtPreferencia = "\(sugerenciasDia[row].ruido)dB - \(nivelesRuido[Int(sugerenciasDia[row].ruido / 10)])"
         
         
         return cell
@@ -339,7 +412,7 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
     //Calculo de sugerencia de lugares, retorna arreglo de Major de beacons
     func cacularSugerenciaLugares (hora: Int, ruido: Int) -> [(Int,Int,Int,Int)] {
         var lugaresOcurrencias: [(Int,Int,Int,Int)] = []
-        for i in 0...20 {
+        for i in 0...self.mayorEdificios.count {
             lugaresOcurrencias.append((i,0,ruido,hora))
         }
         for registro in registros {

@@ -180,11 +180,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MiCampusUniandes/ViewController.swift"
-            timestampString = "478644443.802598"
+            timestampString = "478653776.661892"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "170"
-            endingLineNumber = "170"
+            startingLineNumber = "241"
+            endingLineNumber = "241"
             landmarkName = "tableView(_:cellForRowAtIndexPath:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -196,11 +196,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MiCampusUniandes/ViewController.swift"
-            timestampString = "478644443.802598"
+            timestampString = "478653776.661892"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "270"
-            endingLineNumber = "270"
+            startingLineNumber = "343"
+            endingLineNumber = "343"
             landmarkName = "tomarDatos()"
             landmarkType = "5">
             <Locations>
