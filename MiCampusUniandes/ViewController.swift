@@ -412,11 +412,11 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
     //Calculo de sugerencia de lugares, retorna arreglo de Major de beacons
     func cacularSugerenciaLugares (hora: Int, ruido: Int) -> [(Int,Int,Int,Int)] {
         var lugaresOcurrencias: [(Int,Int,Int,Int)] = []
-        for i in 0...self.mayorEdificios.count {
+        for i in 0...self.mayorEdificios.count - 2 {
             lugaresOcurrencias.append((i,0,ruido,hora))
         }
         for registro in registros {
-            if registro.hora == hora && Int(registro.ruido / 10)*10 == ruido {
+            if registro.hora == hora && Int(registro.ruido / 10)*10 == ruido && registro.mayor != self.mayorEdificios.count - 1 {
                 if (registro.mayor != -1) {
                    lugaresOcurrencias[registro.mayor].1 += 1
                 }
