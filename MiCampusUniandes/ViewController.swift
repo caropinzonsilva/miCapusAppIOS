@@ -94,7 +94,7 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
         else {
             print("registros no cargados")
             for dia in 0...6 {
-                for hora in 6...20 {
+                for hora in 6...22 {
                     var ruido_r = 0
                     if (hora <= 14) {
                         ruido_r = 5*hora + 10
@@ -127,6 +127,9 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
         
         var sugerenciasProximasHoras: [(Int,Int,Int,Int)] = []
         
+        var arregloOtrasOpciones1: [(Int,Int,Int,Int)] = []
+        var arregloOtrasOpciones2: [(Int,Int,Int,Int)] = []
+        
         for i in 0...5 {
             print("hora:")
             print(hora + i)
@@ -148,6 +151,8 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
             }*/
             print(sugerencia)
             sugerenciasProximasHoras.append(sugerencia[0])
+            arregloOtrasOpciones1.append(sugerencia[1])
+            arregloOtrasOpciones2.append(sugerencia[2])
             
         }
         print("sugerencias")
@@ -155,16 +160,18 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
         
         
         //Inicializar las sugerencias del día
+        var indiceSugerencias = 0
         for sugerencia in sugerenciasProximasHoras {
-            if sugerencia.3 < 6 || sugerencia.3 > 19 {
-                let sugerenciaDia: SugerenciaDia = SugerenciaDia(edificio: "Universidad cerrada", ruido: 0, hora: sugerencia.3, mayor: -1, preferencia: 0, fecha: NSDate())
+            if sugerencia.3 < 6 || sugerencia.3 > 23 {
+                let sugerenciaDia: SugerenciaDia = SugerenciaDia(edificio: "Universidad cerrada", ruido: 0, hora: sugerencia.3, mayor: -1, preferencia: 0, opcion1: arregloOtrasOpciones1[indiceSugerencias], opcion2: arregloOtrasOpciones2[indiceSugerencias], fecha: NSDate())
                 sugerenciasDia.append(sugerenciaDia)
             }
             //Universidad cerrada
             else {
-                let sugerenciaDia: SugerenciaDia = SugerenciaDia(edificio: mayorEdificios[sugerencia.0], ruido: sugerencia.2, hora: sugerencia.3, mayor: sugerencia.0, preferencia: 0, fecha: NSDate())
+                let sugerenciaDia: SugerenciaDia = SugerenciaDia(edificio: mayorEdificios[sugerencia.0], ruido: sugerencia.2, hora: sugerencia.3, mayor: sugerencia.0, preferencia: 0, opcion1: arregloOtrasOpciones1[indiceSugerencias], opcion2: arregloOtrasOpciones2[indiceSugerencias], fecha: NSDate())
                 sugerenciasDia.append(sugerenciaDia)
             }
+            indiceSugerencias += 1
             //let sugerenciaDia: SugerenciaDia = SugerenciaDia(edificio: mayorEdificios[sugerencia.0], ruido: sugerencia.2, fecha: NSDate())
             //sugerenciasDia.append(sugerenciaDia)
         }
@@ -437,6 +444,25 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
     
     func cargarRegistros(dia: String) -> [Registro]? {
         return NSKeyedUnarchiver.unarchiveObjectWithFile(Registro.ArchiveURL.path! + dia) as? [Registro]
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "VerRecomendacion" {
+            if let indexPath = self.tableView.indexPathForSelectedRow{
+                self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
+                var re = sugerenciasDia
+                print("lista sugerencias dia")
+                print(re)
+                if let detalle = segue.destinationViewController as? DetalleSugerenciaViewController{
+                    print("indexPath.row")
+                    print(indexPath.row)
+                    print(re[indexPath.row])
+                    print("after")
+                    detalle.sugerencia = re[indexPath.row]
+                }
+            }
+        }
+        
     }
     
 }

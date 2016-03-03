@@ -21,6 +21,7 @@
 		EEB521151C7D37D100B77BB0 /* MiCampusUniandesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEB521141C7D37D100B77BB0 /* MiCampusUniandesUITests.swift */; };
 		EEB521611C7D3F3500B77BB0 /* HoraCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEB521601C7D3F3500B77BB0 /* HoraCell.swift */; };
 		EEB8D0CA1C87882C0061719D /* sleep.png in Resources */ = {isa = PBXBuildFile; fileRef = EEB8D0C91C87882C0061719D /* sleep.png */; };
+		EEB8D0CC1C87B6000061719D /* DetalleSugerenciaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEB8D0CB1C87B6000061719D /* DetalleSugerenciaViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +62,7 @@
 		EEB521161C7D37D100B77BB0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EEB521601C7D3F3500B77BB0 /* HoraCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HoraCell.swift; sourceTree = "<group>"; };
 		EEB8D0C91C87882C0061719D /* sleep.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sleep.png; sourceTree = "<group>"; };
+		EEB8D0CB1C87B6000061719D /* DetalleSugerenciaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetalleSugerenciaViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,6 +168,7 @@
 				EE82F7F71C7FEB60008DB006 /* SD.png */,
 				EEB8D0C91C87882C0061719D /* sleep.png */,
 				EEB520F61C7D37D100B77BB0 /* ViewController.swift */,
+				EEB8D0CB1C87B6000061719D /* DetalleSugerenciaViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -314,6 +317,7 @@
 				EEB520F71C7D37D100B77BB0 /* ViewController.swift in Sources */,
 				EE84B0881C8634F500995A0E /* Registro.swift in Sources */,
 				EEB521611C7D3F3500B77BB0 /* HoraCell.swift in Sources */,
+				EEB8D0CC1C87B6000061719D /* DetalleSugerenciaViewController.swift in Sources */,
 				EEB520F51C7D37D100B77BB0 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
