@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MiCampusUniandes/ViewController.swift"
-            timestampString = "481072787.034062"
+            timestampString = "481638824.587896"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "10"
-            endingLineNumber = "10">
+            startingLineNumber = "11"
+            endingLineNumber = "11">
             <Locations>
                <Location
                   shouldBeEnabled = "No"
@@ -178,11 +178,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MiCampusUniandes/ViewController.swift"
-            timestampString = "481635447.784279"
+            timestampString = "481662322.831445"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "247"
-            endingLineNumber = "247"
+            startingLineNumber = "258"
+            endingLineNumber = "258"
             landmarkName = "tableView(_:cellForRowAtIndexPath:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -194,11 +194,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MiCampusUniandes/ViewController.swift"
-            timestampString = "481635447.784279"
+            timestampString = "481662322.831445"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "346"
-            endingLineNumber = "346"
+            startingLineNumber = "357"
+            endingLineNumber = "357"
             landmarkName = "tomarDatos()"
             landmarkType = "5">
             <Locations>
@@ -290,11 +290,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MiCampusUniandes/ViewController.swift"
-            timestampString = "481635776.587991"
+            timestampString = "481662322.831445"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "488"
-            endingLineNumber = "488"
+            startingLineNumber = "499"
+            endingLineNumber = "499"
             landmarkName = "mandarRegistro(_:hora:ruido:lugar:)"
             landmarkType = "5">
             <Locations>
@@ -338,12 +338,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MiCampusUniandes/ViewController.swift"
-            timestampString = "481635447.784279"
+            timestampString = "481662322.831445"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "140"
-            endingLineNumber = "140"
-            landmarkName = "viewDidLoad()"
+            startingLineNumber = "542"
+            endingLineNumber = "542"
+            landmarkName = "pedirSugerencias(_:hora:ruido:contador:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

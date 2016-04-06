@@ -7,6 +7,7 @@
 import UIKit
 import AVFoundation
 import CoreLocation
+import SystemConfiguration
 
 
 class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocationManagerDelegate {
@@ -31,10 +32,12 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
     
     //Bluetooth
     let locationManager = CLLocationManager()
-    let region = CLBeaconRegion(proximityUUID: NSUUID(UUIDString: "92AB49BE-4127-42F4-B532-90FAF1E26491")!, identifier: "Estimotes")
+    let region = CLBeaconRegion(proximityUUID: NSUUID(UUIDString: "A6CFB3CB-4BA1-4471-AE0E-4AE45A632798")!, identifier: "Estimotes")
     var listaBeacons = [CLBeacon]()
     
     override func viewDidLoad() {
+        
+        self.pedirSugerencias(4, hora: 13, ruido: 60, contador: 0)
         
         //Background de grabación de Audio
         do {
@@ -131,13 +134,21 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
         var arregloOtrasOpciones1: [(Int,Int,Int,Int)] = []
         var arregloOtrasOpciones2: [(Int,Int,Int,Int)] = []
         
+        let connected = isConnectedToNetwork()
+        print("Is connected: " + String(connected))
         for i in 0...5 {
             let horaActual = hora + i
             print("hora: " + String(horaActual))
             let ruidoPreferencia = calcularPreferenciasHora(hora + i)
             print("ruidoPreferencia: " + String(ruidoPreferencia))
+            if connected
+            {
+                self.pedirSugerencias(self.diaSemana, hora: self.hora + i, ruido: ruidoPreferencia*10, contador: 0)
+            }
+            else {
+                
+            }
             var sugerencia = cacularSugerenciaLugares(hora + i, ruido: ruidoPreferencia*10)
-            self.pedirSugerencias(self.diaSemana, hora: hora + i, ruido: ruidoPreferencia*10)
             //No encontro edificio con nivel de ruido de preferencia
             var encontrado = sugerencia[0].1 != 0
             var j = 0
@@ -489,6 +500,7 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
                 }
                 do {
                     if let responseJSON = try NSJSONSerialization.JSONObjectWithData(data!, options: []) as? [String:AnyObject]{
+                        print("Respuesta mandar registro: ")
                         print(responseJSON)
                     }
                 } catch let error as NSError {
@@ -502,7 +514,7 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
         }
     }
     
-    func pedirSugerencias(dia: Int, hora: Int, ruido: Int) {
+    func pedirSugerencias(dia: Int, hora: Int, ruido: Int, contador: Int) {
         // prepare json data
         
         let json = [ "dia":dia, "hora":hora, "ruido":ruido ]
@@ -525,11 +537,36 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
                     return
                 }
                 do {
-                    if let responseJSON = try NSJSONSerialization.JSONObjectWithData(data!, options: []) as? [String:AnyObject]{
-                        print("Respuesta de servidor: ")
+                    print("pedirSugerencias dia: " + String(dia) + ", hora: " + String(hora) + ", ruido: " + String(ruido))
+                    print(contador)
+                    if let responseJSON: NSArray = try NSJSONSerialization.JSONObjectWithData(data!, options: []) as! NSArray {
+                        print("Respuesta pedir sugerencia: ")
                         print(responseJSON)
-                    }
-                } catch let error as NSError {
+                        print(responseJSON.count)
+                        if (responseJSON.count == 0) {
+                            if (contador < 4) {
+                                var nuevoRuido = 0
+                                if (contador == 0) {
+                                    nuevoRuido = ruido + 10
+                                }
+                                else if (contador == 1) {
+                                    nuevoRuido = ruido - 20
+                                }
+                                else if (contador == 2) {
+                                    nuevoRuido = ruido + 30
+                                }
+                                else {
+                                    nuevoRuido = ruido - 40
+                                }
+                                let nuevoContador = contador + 1
+                                self.pedirSugerencias(dia, hora: hora, ruido: nuevoRuido, contador: nuevoContador)
+                            }
+                            else {
+                                print("No existen sugerencias")
+                            }
+                        }
+                        
+                    }                } catch let error as NSError {
                     print(error.localizedDescription)
                 }
             }
@@ -538,6 +575,22 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
         } catch let error as NSError {
             print(error.localizedDescription)
         }
+    }
+    
+    func isConnectedToNetwork() -> Bool {
+        var zeroAddress = sockaddr_in()
+        zeroAddress.sin_len = UInt8(sizeofValue(zeroAddress))
+        zeroAddress.sin_family = sa_family_t(AF_INET)
+        let defaultRouteReachability = withUnsafePointer(&zeroAddress) {
+            SCNetworkReachabilityCreateWithAddress(nil, UnsafePointer($0))
+        }
+        var flags = SCNetworkReachabilityFlags()
+        if !SCNetworkReachabilityGetFlags(defaultRouteReachability!, &flags) {
+            return false
+        }
+        let isReachable = (flags.rawValue & UInt32(kSCNetworkFlagsReachable)) != 0
+        let needsConnection = (flags.rawValue & UInt32(kSCNetworkFlagsConnectionRequired)) != 0
+        return (isReachable && !needsConnection)
     }
 
     
