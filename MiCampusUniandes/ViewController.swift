@@ -8,6 +8,7 @@ import UIKit
 import AVFoundation
 import CoreLocation
 
+
 class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocationManagerDelegate {
     
     var seleccion : Int = 0
@@ -57,10 +58,10 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
         hora = (hour?.hour)!
         
         
-        let registrosCargados = cargarRegistros(diasSemanaArray[diaSemana])
+        var registrosCargados = cargarRegistros(diasSemanaArray[diaSemana])
         print(registrosCargados)
         if registrosCargados != nil {
-            print("registros cargados")
+            print("Registros cargados")
             registros = registrosCargados!
             /*registros = []
                 for hora in 6...20 {
@@ -92,7 +93,7 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
                 }*/
         }
         else {
-            print("registros no cargados")
+            print("Registros no cargados")
             for dia in 0...6 {
                 for hora in 6...22 {
                     var ruido_r = 0
@@ -131,12 +132,12 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
         var arregloOtrasOpciones2: [(Int,Int,Int,Int)] = []
         
         for i in 0...5 {
-            print("hora:")
-            print(hora + i)
+            let horaActual = hora + i
+            print("hora: " + String(horaActual))
             let ruidoPreferencia = calcularPreferenciasHora(hora + i)
-            print("ruidoPreferencia")
-            print(ruidoPreferencia)
+            print("ruidoPreferencia: " + String(ruidoPreferencia))
             var sugerencia = cacularSugerenciaLugares(hora + i, ruido: ruidoPreferencia*10)
+            self.pedirSugerencias(self.diaSemana, hora: hora + i, ruido: ruidoPreferencia*10)
             //No encontro edificio con nivel de ruido de preferencia
             var encontrado = sugerencia[0].1 != 0
             var j = 0
@@ -149,14 +150,14 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
                     encontrado = sugerencia[0].1 != 0
                 }
             }*/
-            print(sugerencia)
+            print("sugerencia: " + String(sugerencia))
             sugerenciasProximasHoras.append(sugerencia[0])
             arregloOtrasOpciones1.append(sugerencia[1])
             arregloOtrasOpciones2.append(sugerencia[2])
             
         }
-        print("sugerencias")
-        print(sugerenciasProximasHoras)
+        //print("sugerencias")
+        //print(sugerenciasProximasHoras)
         
         
         //Inicializar las sugerencias del día
@@ -211,7 +212,6 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
         locationManager.requestStateForRegion(region)
         locationManager.startRangingBeaconsInRegion(region)
         
-        print(UIApplication.sharedApplication().backgroundRefreshStatus)
     }
     
     override func didReceiveMemoryWarning() {
@@ -283,8 +283,6 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
         
         do {
             audioRecorder = try AVAudioRecorder(URL: audioURL, settings: settings)
-            print("audioRec")
-            print(audioRecorder)
             audioRecorder.meteringEnabled = true
             audioRecorder.delegate = self
             audioRecorder.record()
@@ -322,11 +320,10 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
     }
     
     func tomarDatos() {
-        print("antes")
+        print("Toma de datos")
         //self.loadRecordingUI()
         self.startRecording()
         
-        print("inside while")
         let delay = 10 * Double(NSEC_PER_SEC)//Delay de tiempo de grabacion
         let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
         dispatch_after(time, dispatch_get_main_queue()) {
@@ -341,11 +338,11 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
             else {
                 x = (x + 160)/160 * 90
             }
-            print(x)
+            print("dB registrados: " + String(x))
+            print("Lista beacons encontrados")
             print(self.listaBeacons)
             
             self.finishRecording(success: true)
-            print("despues")
             
             var mayor = -1
             var minor = -1
@@ -357,9 +354,15 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
                 }
             }
             let r = Registro(ruido: Int(x), dia: self.diaSemana, hora: self.hora, mayor: mayor, minor: minor)
-            self.registros.append(r)
+            if mayor > -1 {
+                //Solo mando registro si conosco el lugar de la persona, por le contrario sirve para calcular las preferencias del usuario
+                self.mandarRegistro(self.diaSemana, hora: self.hora, ruido: Int(x), lugar: self.mayorEdificios[mayor])
+            }
             
+            self.registros.append(r)
             self.salvarRegistro(self.diasSemanaArray[self.diaSemana])
+            print("Registros de hoy: ")
+            print(self.registros)
             
             print(self.calcularPreferenciasHora(18))
         }
@@ -431,7 +434,6 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
         }
         lugaresOcurrencias = lugaresOcurrencias.sort{ $0.1 != $1.1 ? $0.1 > $1.1 : $0.0 < $1.0 }
         return lugaresOcurrencias
-        
     }
     
     // MARK: NSCoding
@@ -451,8 +453,6 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
             if let indexPath = self.tableView.indexPathForSelectedRow{
                 self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
                 var re = sugerenciasDia
-                print("lista sugerencias dia")
-                print(re)
                 if let detalle = segue.destinationViewController as? DetalleSugerenciaViewController{
                     print("indexPath.row")
                     print(indexPath.row)
@@ -464,5 +464,81 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
         }
         
     }
+    
+    func mandarRegistro(dia: Int, hora: Int, ruido: Int, lugar: String) {
+        // prepare json data
+        
+        let json = [ "dia":dia, "hora":hora, "ruido":ruido, "lugar":lugar ]
+        do {
+            var jsonData = try NSJSONSerialization.dataWithJSONObject(json, options: .PrettyPrinted)
+            //print("AVAudioSession is Active")
+        
+            // create post request
+            let url = NSURL(string: "http://157.253.205.30/api/registroAdd")!
+            let request = NSMutableURLRequest(URL: url)
+            request.HTTPMethod = "POST"
+        
+                // insert json data to the request
+            request.HTTPBody = jsonData
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+            let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data,response,error in
+                if error != nil{
+                    print(error!.localizedDescription)
+                    return
+                }
+                do {
+                    if let responseJSON = try NSJSONSerialization.JSONObjectWithData(data!, options: []) as? [String:AnyObject]{
+                        print(responseJSON)
+                    }
+                } catch let error as NSError {
+                    print(error.localizedDescription)
+                }
+            }
+        
+            task.resume()
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+    }
+    
+    func pedirSugerencias(dia: Int, hora: Int, ruido: Int) {
+        // prepare json data
+        
+        let json = [ "dia":dia, "hora":hora, "ruido":ruido ]
+        do {
+            var jsonData = try NSJSONSerialization.dataWithJSONObject(json, options: .PrettyPrinted)
+            //print("AVAudioSession is Active")
+            
+            // create post request
+            let url = NSURL(string: "http://157.253.205.30/api/darSugerencia")!
+            let request = NSMutableURLRequest(URL: url)
+            request.HTTPMethod = "POST"
+            
+            // insert json data to the request
+            request.HTTPBody = jsonData
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data,response,error in
+                if error != nil{
+                    print(error!.localizedDescription)
+                    return
+                }
+                do {
+                    if let responseJSON = try NSJSONSerialization.JSONObjectWithData(data!, options: []) as? [String:AnyObject]{
+                        print("Respuesta de servidor: ")
+                        print(responseJSON)
+                    }
+                } catch let error as NSError {
+                    print(error.localizedDescription)
+                }
+            }
+            
+            task.resume()
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+    }
+
     
 }
