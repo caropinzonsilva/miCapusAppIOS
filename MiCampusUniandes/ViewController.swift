@@ -17,12 +17,12 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
     var sonidos = ["1","2","3"]
     var sugerenciasDia = [SugerenciaDia]()
     var registros = [Registro]()
-    var diasSemanaArray = ["D","L","M","I","J","V","S"]
+    var diasSemanaArray = ["D","L","M","I","J","V","S","SS"]
     var diaSemana: Int = 0
     var hora: Int = 0
     //var mayorEdificios = ["SD - Piso 7", "SD - Piso 8", "SD - Piso 9", "SD - Piso 10", "ML - Sótano 1", "ML - Piso 1", "ML - Piso 2", "ML - Piso 3", "ML - Piso 4", "ML - Piso 5", "ML - Piso 6", "ML - Piso 7", "ML - Piso 8", "W Sótano 1", "W Piso 1", "W Piso 2", "W Piso 3", "W Piso 4", "W Piso 5", "W Piso 6"]
-    var mayorEdificios = ["SD", "ML", "W", "NA"]
-    var imagenesMayorEdificio = ["SD", "ML", "W", "NA"]
+    var mayorEdificios = ["ML - Sótano 1", "ML - Piso 1", "ML - Piso 4", "ML - Piso 5", "ML - Piso 6", "ML - Piso 7", "ML - Piso 8", "SD - Piso 7", "SD - Piso 8", "SD - Piso 9"]
+    var imagenesMayorEdificio = ["ML_S1", "ML_1","ML_4","ML_5","ML_6","ML_7","ML_8", "SD_7", "SD_8","SD_9"]
     var nivelesRuido = ["Muy bajo", "Muy bajo", "Muy bajo", "Bajo", "Bajo", "Bajo", "Medio", "Medio", "Alto", "Muy Alto"]
     
     //Grabar audio
@@ -32,12 +32,14 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
     
     //Bluetooth
     let locationManager = CLLocationManager()
-    let region = CLBeaconRegion(proximityUUID: NSUUID(UUIDString: "A6CFB3CB-4BA1-4471-AE0E-4AE45A632798")!, identifier: "Estimotes")
+    let region = CLBeaconRegion(proximityUUID: NSUUID(UUIDString: "92AB49BE-4127-42F4-B532-90FAF1E26491")!, identifier: "Estimotes")
     var listaBeacons = [CLBeacon]()
     
+    @IBAction func unwindToMain(segue: UIStoryboardSegue) {}
+    
     override func viewDidLoad() {
-        
-        self.pedirSugerencias(4, hora: 13, ruido: 60, contador: 0)
+        print("antes brightness");
+        print(UIScreen.mainScreen().brightness);
         
         //Background de grabación de Audio
         do {
@@ -60,7 +62,8 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
         diaSemana = (myComponent?.weekday)!
         hora = (hour?.hour)!
         
-        
+        print("hoy es ")
+        print(diaSemana)
         var registrosCargados = cargarRegistros(diasSemanaArray[diaSemana])
         print(registrosCargados)
         if registrosCargados != nil {
@@ -136,57 +139,43 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
         
         let connected = isConnectedToNetwork()
         print("Is connected: " + String(connected))
-        for i in 0...5 {
+        for i in 0...3 {
             let horaActual = hora + i
             print("hora: " + String(horaActual))
             let ruidoPreferencia = calcularPreferenciasHora(hora + i)
             print("ruidoPreferencia: " + String(ruidoPreferencia))
             if connected
             {
-                self.pedirSugerencias(self.diaSemana, hora: self.hora + i, ruido: ruidoPreferencia*10, contador: 0)
+                if (horaActual < 6 || horaActual > 22) {
+                    var sugerencia = calcularSugerenciaLugares(hora + i, ruido: ruidoPreferencia*10)
+                    let sugerenciaDia: SugerenciaDia = SugerenciaDia(edificio: "Universidad cerrada", ruido: 0, luz: 0, temperatura: 0, humedad: 0, hora: horaActual, mayor: -1, preferencia: 0, opcion1: sugerencia[1], opcion2: sugerencia[2], fecha: NSDate())
+                    sugerenciasDia.append(sugerenciaDia)
+                }
+                else {
+                    self.pedirSugerencias(self.diaSemana, hora: self.hora + i, ruido: ruidoPreferencia*10, contador: 0)
+                }
             }
             else {
+                var sugerencia = calcularSugerenciaLugares(hora + i, ruido: ruidoPreferencia*10)
+                print("sugerencia: " + String(sugerencia))
+                if (horaActual < 6 || horaActual > 22) {
+                    let sugerenciaDia: SugerenciaDia = SugerenciaDia(edificio: "Universidad cerrada", ruido: 0, luz: 0, temperatura: 0, humedad: 0, hora: horaActual, mayor: -1, preferencia: 0, opcion1: sugerencia[1], opcion2: sugerencia[2], fecha: NSDate())
+                    sugerenciasDia.append(sugerenciaDia)
+                }
+                else {
+                    var sugerencia = calcularSugerenciaLugares(hora + i, ruido: ruidoPreferencia*10)
+                    let sugerenciaDia: SugerenciaDia = SugerenciaDia(edificio: mayorEdificios[sugerencia[0].0] + " info. local", ruido: sugerencia[0].2, luz: 0, temperatura: 0, humedad: 0, hora: sugerencia[0].3, mayor: sugerencia[0].0, preferencia: 0, opcion1: sugerencia[1], opcion2: sugerencia[2], fecha: NSDate())
+                    sugerenciasDia.append(sugerenciaDia)
+                }
                 
             }
-            var sugerencia = cacularSugerenciaLugares(hora + i, ruido: ruidoPreferencia*10)
-            //No encontro edificio con nivel de ruido de preferencia
-            var encontrado = sugerencia[0].1 != 0
-            var j = 0
-            /*while !encontrado {
-                j += 1
-                sugerencia = cacularSugerenciaLugares(hora + i, ruido: (ruidoPreferencia + j)*10)
-                encontrado = sugerencia[0].1 != 0
-                if !encontrado {
-                    sugerencia = cacularSugerenciaLugares(hora + i, ruido: (ruidoPreferencia - j)*10)
-                    encontrado = sugerencia[0].1 != 0
-                }
-            }*/
-            print("sugerencia: " + String(sugerencia))
-            sugerenciasProximasHoras.append(sugerencia[0])
-            arregloOtrasOpciones1.append(sugerencia[1])
-            arregloOtrasOpciones2.append(sugerencia[2])
-            
         }
         //print("sugerencias")
         //print(sugerenciasProximasHoras)
         
         
         //Inicializar las sugerencias del día
-        var indiceSugerencias = 0
-        for sugerencia in sugerenciasProximasHoras {
-            if sugerencia.3 < 6 || sugerencia.3 > 23 {
-                let sugerenciaDia: SugerenciaDia = SugerenciaDia(edificio: "Universidad cerrada", ruido: 0, hora: sugerencia.3, mayor: -1, preferencia: 0, opcion1: arregloOtrasOpciones1[indiceSugerencias], opcion2: arregloOtrasOpciones2[indiceSugerencias], fecha: NSDate())
-                sugerenciasDia.append(sugerenciaDia)
-            }
-            //Universidad cerrada
-            else {
-                let sugerenciaDia: SugerenciaDia = SugerenciaDia(edificio: mayorEdificios[sugerencia.0], ruido: sugerencia.2, hora: sugerencia.3, mayor: sugerencia.0, preferencia: 0, opcion1: arregloOtrasOpciones1[indiceSugerencias], opcion2: arregloOtrasOpciones2[indiceSugerencias], fecha: NSDate())
-                sugerenciasDia.append(sugerenciaDia)
-            }
-            indiceSugerencias += 1
-            //let sugerenciaDia: SugerenciaDia = SugerenciaDia(edificio: mayorEdificios[sugerencia.0], ruido: sugerencia.2, fecha: NSDate())
-            //sugerenciasDia.append(sugerenciaDia)
-        }
+        
         
         recordingSession = AVAudioSession.sharedInstance()
         
@@ -225,6 +214,38 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
         
     }
     
+    override func viewDidAppear(animated: Bool) {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewController.rotated), name: UIDeviceOrientationDidChangeNotification, object: nil)
+    }
+    
+    func rotated()
+    {
+        if(UIDeviceOrientationIsLandscape(UIDevice.currentDevice().orientation))
+        {
+            print("landscape vc")
+            
+            /*
+ let newViewController = MapaViewController();
+ newViewController.view.backgroundColor = UIColor.redColor();
+ 
+ self.presentViewController(newViewController, animated: true) { () -> Void in
+ // maybe some code here to handle this view while we can still access it easily
+ // we also don't have to have this presentation be animated
+ }*/
+ 
+            /*let vc = self.storyboard?.instantiateViewControllerWithIdentifier("MapaView") as! MapaViewController;
+            self.presentViewController(vc, animated: true, completion: nil);*/
+            performSegueWithIdentifier("ViewMap", sender: self);
+        }
+        
+        if(UIDeviceOrientationIsPortrait(UIDevice.currentDevice().orientation))
+        {
+            print("Portrait vc")
+            
+        }
+        
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -246,6 +267,11 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
         let row = indexPath.row
         cell.txtEdificio.text = sugerenciasDia[row].edificio
         cell.txtSonido.text = "\(sugerenciasDia[row].ruido)dB - \(nivelesRuido[Int(sugerenciasDia[row].ruido / 10)])"
+        
+        cell.txtLuz.text = "\(sugerenciasDia[row].luz)"
+        cell.txtTemp.text = "\(sugerenciasDia[row].temperatura)"
+        
+        cell.txtHumedad.text = "\(sugerenciasDia[row].humedad)"
         
         var imageName = "sleep"
         if sugerenciasDia[row].mayor != -1 {
@@ -367,7 +393,8 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
             let r = Registro(ruido: Int(x), dia: self.diaSemana, hora: self.hora, mayor: mayor, minor: minor)
             if mayor > -1 {
                 //Solo mando registro si conosco el lugar de la persona, por le contrario sirve para calcular las preferencias del usuario
-                self.mandarRegistro(self.diaSemana, hora: self.hora, ruido: Int(x), lugar: self.mayorEdificios[mayor])
+                let brillo = Int(UIScreen.mainScreen().brightness*60000);
+                self.mandarRegistro(self.diaSemana, hora: self.hora, ruido: Int(x), lugar: self.mayorEdificios[mayor], luz: brillo)
             }
             
             self.registros.append(r)
@@ -431,7 +458,14 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
     }
     
     //Calculo de sugerencia de lugares, retorna arreglo de Major de beacons
-    func cacularSugerenciaLugares (hora: Int, ruido: Int) -> [(Int,Int,Int,Int)] {
+    func calcularSugerenciaLugares (hora: Int, ruido: Int) -> [(Int,Int,Int,Int)] {
+        let connected = isConnectedToNetwork()
+        if (connected) {
+            
+        }
+        else {
+            
+        }
         var lugaresOcurrencias: [(Int,Int,Int,Int)] = []
         for i in 0...self.mayorEdificios.count - 2 {
             lugaresOcurrencias.append((i,0,ruido,hora))
@@ -459,11 +493,22 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
         return NSKeyedUnarchiver.unarchiveObjectWithFile(Registro.ArchiveURL.path! + dia) as? [Registro]
     }
     
+    override func canBecomeFirstResponder() -> Bool {
+        return true
+    }
+    
+    override func motionEnded(motion: UIEventSubtype, withEvent event: UIEvent?) {
+        if motion == .MotionShake {
+            print("shake");
+            performSegueWithIdentifier("VerRecomendacion", sender: self);
+        }
+    }
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "VerRecomendacion" {
+            var re = sugerenciasDia
             if let indexPath = self.tableView.indexPathForSelectedRow{
                 self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
-                var re = sugerenciasDia
                 if let detalle = segue.destinationViewController as? DetalleSugerenciaViewController{
                     print("indexPath.row")
                     print(indexPath.row)
@@ -472,20 +517,27 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
                     detalle.sugerencia = re[indexPath.row]
                 }
             }
+            else {
+                print("default")
+                if let detalle = segue.destinationViewController as? DetalleSugerenciaViewController{
+                    detalle.sugerencia = re[0]
+                }
+                
+            }
         }
         
     }
     
-    func mandarRegistro(dia: Int, hora: Int, ruido: Int, lugar: String) {
+    func mandarRegistro(dia: Int, hora: Int, ruido: Int, lugar: String, luz: Int) {
         // prepare json data
         
-        let json = [ "dia":dia, "hora":hora, "ruido":ruido, "lugar":lugar ]
+        let json = [ "dia":dia, "hora":hora, "ruido":ruido, "lugar":lugar, "luz": luz, "temperatura": -1, "humedad": -1 ]
         do {
             var jsonData = try NSJSONSerialization.dataWithJSONObject(json, options: .PrettyPrinted)
             //print("AVAudioSession is Active")
         
             // create post request
-            let url = NSURL(string: "http://157.253.205.30/api/registroAdd")!
+            let url = NSURL(string: "http://157.253.205.40/api/registroAdd")!
             let request = NSMutableURLRequest(URL: url)
             request.HTTPMethod = "POST"
         
@@ -523,7 +575,7 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
             //print("AVAudioSession is Active")
             
             // create post request
-            let url = NSURL(string: "http://157.253.205.30/api/darSugerencia")!
+            let url = NSURL(string: "http://157.253.205.40/api/darSugerenciaRuido")!
             let request = NSMutableURLRequest(URL: url)
             request.HTTPMethod = "POST"
             
@@ -534,6 +586,14 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
             let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data,response,error in
                 if error != nil{
                     print(error!.localizedDescription)
+                    var sugerencia = self.calcularSugerenciaLugares(hora, ruido: ruido)
+                    let sugerenciaDia: SugerenciaDia = SugerenciaDia(edificio: self.mayorEdificios[sugerencia[0].0] + " info. local", ruido: sugerencia[0].2, luz: 0, temperatura: 0, humedad: 0, hora: sugerencia[0].3, mayor: sugerencia[0].0, preferencia: 0, opcion1: sugerencia[1], opcion2: sugerencia[2], fecha: NSDate())
+                    self.sugerenciasDia.append(sugerenciaDia)
+                    self.sugerenciasDia = self.sugerenciasDia.sort({ $0.hora < $1.hora })
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.tableView.reloadData()
+                    })
+                    print(sugerencia[0].2)
                     return
                 }
                 do {
@@ -561,12 +621,33 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
                                 let nuevoContador = contador + 1
                                 self.pedirSugerencias(dia, hora: hora, ruido: nuevoRuido, contador: nuevoContador)
                             }
-                            else {
-                                print("No existen sugerencias")
-                            }
                         }
-                        
-                    }                } catch let error as NSError {
+                        else {
+                            let lugar = responseJSON[0]["lugar"] as? Int
+                            let ruido = responseJSON[0]["ruido"] as? Int
+                            var opcion1 = (0,0,0,0)
+                            if responseJSON.count > 1 {
+                                let lugar = responseJSON[1]["lugar"] as? Int
+                                let ruido = responseJSON[1]["ruido"] as? Int
+                                opcion1 = (lugar!,0,ruido!,0)
+                            }
+                            var opcion2 = (0,0,0,0)
+                            if responseJSON.count > 2 {
+                                let lugar = responseJSON[2]["lugar"] as? Int
+                                let ruido = responseJSON[2]["ruido"] as? Int
+                                opcion2 = (lugar!,0,ruido!,0)
+                            }
+                            let sugerenciaDia: SugerenciaDia = SugerenciaDia(edificio: self.mayorEdificios[lugar!], ruido: ruido!, luz: 0, temperatura: 0, humedad: 0, hora: hora, mayor: lugar!, preferencia: 0, opcion1: opcion1, opcion2: opcion2, fecha: NSDate())
+                            self.sugerenciasDia.append(sugerenciaDia)
+                            self.sugerenciasDia = self.sugerenciasDia.sort({ $0.hora < $1.hora })
+                            dispatch_async(dispatch_get_main_queue(), {
+                                self.tableView.reloadData()
+                            })
+                            
+                            
+                        }
+                    }
+                } catch let error as NSError {
                     print(error.localizedDescription)
                 }
             }

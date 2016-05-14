@@ -25,222 +25,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MiCampusUniandes/ViewController.swift"
-            timestampString = "481638824.587896"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "11"
-            endingLineNumber = "11">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "MiCampusUniandes.ViewController.seleccion.getter : Swift.Int"
-                  moduleName = "MiCampusUniandes"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/carolinapinzon/Documents/Uniandes/201610/Mo%CC%81viles/MiCampusUniandes/MiCampusUniandes/ViewController.swift"
-                  timestampString = "477971488.964979"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "0"
-                  endingLineNumber = "0"
-                  offsetFromSymbolStart = "16">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "MiCampusUniandes.ViewController.seleccion.materializeForSet : Swift.Int"
-                  moduleName = "MiCampusUniandes"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/carolinapinzon/Documents/Uniandes/201610/Mo%CC%81viles/MiCampusUniandes/MiCampusUniandes/ViewController.swift"
-                  timestampString = "477971488.9653"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "0"
-                  endingLineNumber = "0"
-                  offsetFromSymbolStart = "28">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "MiCampusUniandes.ViewController.init (MiCampusUniandes.ViewController.Type)(style : __C.UITableViewStyle) -&gt; MiCampusUniandes.ViewController"
-                  moduleName = "MiCampusUniandes"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/carolinapinzon/Documents/Uniandes/201610/Mo%CC%81viles/MiCampusUniandes/MiCampusUniandes/ViewController.swift"
-                  timestampString = "477971488.965437"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "11"
-                  endingLineNumber = "11"
-                  offsetFromSymbolStart = "32">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "MiCampusUniandes.ViewController.init (MiCampusUniandes.ViewController.Type)(nibName : Swift.Optional&lt;Swift.String&gt;, bundle : Swift.Optional&lt;__ObjC.NSBundle&gt;) -&gt; MiCampusUniandes.ViewController"
-                  moduleName = "MiCampusUniandes"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/carolinapinzon/Documents/Uniandes/201610/Mo%CC%81viles/MiCampusUniandes/MiCampusUniandes/ViewController.swift"
-                  timestampString = "477971488.965577"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "11"
-                  endingLineNumber = "11"
-                  offsetFromSymbolStart = "81">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "MiCampusUniandes.ViewController.init (MiCampusUniandes.ViewController.Type)(coder : __ObjC.NSCoder) -&gt; Swift.Optional&lt;MiCampusUniandes.ViewController&gt;"
-                  moduleName = "MiCampusUniandes"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/carolinapinzon/Documents/Uniandes/201610/Mo%CC%81viles/MiCampusUniandes/MiCampusUniandes/ViewController.swift"
-                  timestampString = "477971488.965707"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "11"
-                  endingLineNumber = "11"
-                  offsetFromSymbolStart = "32">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MiCampusUniandes/ViewController.swift"
-            timestampString = "478181198.55253"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "7"
-            endingLineNumber = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "MiCampusUniandes.ViewController.__deallocating_deinit"
-                  moduleName = "MiCampusUniandes"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/carolinapinzon/Documents/Uniandes/201610/Mo%CC%81viles/MiCampusUniandes/MiCampusUniandes/ViewController.swift"
-                  timestampString = "477971488.969978"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "0"
-                  endingLineNumber = "0"
-                  offsetFromSymbolStart = "19">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "MiCampusUniandes.ViewController.init (MiCampusUniandes.ViewController.Type)(style : __C.UITableViewStyle) -&gt; MiCampusUniandes.ViewController"
-                  moduleName = "MiCampusUniandes"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/carolinapinzon/Documents/Uniandes/201610/Mo%CC%81viles/MiCampusUniandes/MiCampusUniandes/ViewController.swift"
-                  timestampString = "477971488.970142"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "11"
-                  endingLineNumber = "11"
-                  offsetFromSymbolStart = "32">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "MiCampusUniandes.ViewController.init (MiCampusUniandes.ViewController.Type)(nibName : Swift.Optional&lt;Swift.String&gt;, bundle : Swift.Optional&lt;__ObjC.NSBundle&gt;) -&gt; MiCampusUniandes.ViewController"
-                  moduleName = "MiCampusUniandes"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/carolinapinzon/Documents/Uniandes/201610/Mo%CC%81viles/MiCampusUniandes/MiCampusUniandes/ViewController.swift"
-                  timestampString = "477971488.970309"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "11"
-                  endingLineNumber = "11"
-                  offsetFromSymbolStart = "81">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MiCampusUniandes/ViewController.swift"
-            timestampString = "481662322.831445"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "258"
-            endingLineNumber = "258"
-            landmarkName = "tableView(_:cellForRowAtIndexPath:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MiCampusUniandes/ViewController.swift"
-            timestampString = "481662322.831445"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "357"
-            endingLineNumber = "357"
-            landmarkName = "tomarDatos()"
-            landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "MiCampusUniandes.ViewController.tomarDatos (MiCampusUniandes.ViewController)() -&gt; ()"
-                  moduleName = "MiCampusUniandes"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/carolinapinzon/Documents/Uniandes/201610/Mo%CC%81viles/MiCampusUniandes/MiCampusUniandes/ViewController.swift"
-                  timestampString = "478567452.716656"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "241"
-                  endingLineNumber = "241"
-                  offsetFromSymbolStart = "868">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "MiCampusUniandes.ViewController.(tomarDatos (MiCampusUniandes.ViewController) -&gt; () -&gt; ()).(closure #1)"
-                  moduleName = "MiCampusUniandes"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/carolinapinzon/Documents/Uniandes/201610/Mo%CC%81viles/MiCampusUniandes/MiCampusUniandes/ViewController.swift"
-                  timestampString = "478567452.716946"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "241"
-                  endingLineNumber = "241"
-                  offsetFromSymbolStart = "898">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "MiCampusUniandes/DetalleSugerenciaViewController.swift"
             timestampString = "478656285.520208"
             startingColumnNumber = "9223372036854775807"
@@ -290,45 +74,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MiCampusUniandes/ViewController.swift"
-            timestampString = "481662322.831445"
+            timestampString = "484929786.665071"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "499"
-            endingLineNumber = "499"
-            landmarkName = "mandarRegistro(_:hora:ruido:lugar:)"
+            startingLineNumber = "501"
+            endingLineNumber = "501"
+            landmarkName = "motionEnded(_:withEvent:)"
             landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "MiCampusUniandes.ViewController.mandarRegistro (MiCampusUniandes.ViewController)() -&gt; ()"
-                  moduleName = "MiCampusUniandes"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/carolinapinzon/Documents/Uniandes/201610/Mo%CC%81viles/MiCampusUniandes/MiCampusUniandes/ViewController.swift"
-                  timestampString = "481075468.841346"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "489"
-                  endingLineNumber = "489"
-                  offsetFromSymbolStart = "1154">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "MiCampusUniandes.ViewController.(mandarRegistro (MiCampusUniandes.ViewController) -&gt; () -&gt; ()).(closure #1)"
-                  moduleName = "MiCampusUniandes"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/carolinapinzon/Documents/Uniandes/201610/Mo%CC%81viles/MiCampusUniandes/MiCampusUniandes/ViewController.swift"
-                  timestampString = "481075468.841678"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "490"
-                  endingLineNumber = "490"
-                  offsetFromSymbolStart = "23">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -338,12 +90,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MiCampusUniandes/ViewController.swift"
-            timestampString = "481662322.831445"
+            timestampString = "484929786.665071"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "542"
-            endingLineNumber = "542"
-            landmarkName = "pedirSugerencias(_:hora:ruido:contador:)"
+            startingLineNumber = "273"
+            endingLineNumber = "273"
+            landmarkName = "tableView(_:cellForRowAtIndexPath:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
