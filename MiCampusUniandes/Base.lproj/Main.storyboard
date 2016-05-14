@@ -8,16 +8,16 @@
         <scene sceneID="hry-cp-dtO">
             <objects>
                 <tableViewController id="XU0-Ws-kWW" customClass="ViewController" customModule="MiCampusUniandes" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="139" sectionHeaderHeight="28" sectionFooterHeight="28" id="0IF-yN-hHD">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="134" sectionHeaderHeight="28" sectionFooterHeight="28" id="0IF-yN-hHD">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="HorarioCell" rowHeight="139" id="GQ2-2W-4xt" customClass="HoraCell" customModule="MiCampusUniandes" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="92" width="600" height="139"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="HorarioCell" rowHeight="134" id="GQ2-2W-4xt" customClass="HoraCell" customModule="MiCampusUniandes" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="92" width="600" height="134"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="GQ2-2W-4xt" id="IZB-G4-fQ1">
-                                    <rect key="frame" x="0.0" y="0.0" width="567" height="138.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="567" height="133.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="83E-Ti-K9d">
@@ -126,134 +126,52 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="mapa_uniandes.png" translatesAutoresizingMaskIntoConstraints="NO" id="ivb-jJ-J4g">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="349"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="pin_green.png" translatesAutoresizingMaskIntoConstraints="NO" id="fQe-2y-9hZ">
-                                <rect key="frame" x="10" y="10" width="24" height="24"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="pin_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="d5l-PT-khw">
-                                <rect key="frame" x="111" y="15" width="24" height="24"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="pin_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="X8m-9X-ELU">
-                                <rect key="frame" x="106" y="283" width="24" height="24"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="pin_green.png" translatesAutoresizingMaskIntoConstraints="NO" id="dsp-6Y-bP0">
-                                <rect key="frame" x="144" y="189" width="24" height="24"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="pin_green.png" translatesAutoresizingMaskIntoConstraints="NO" id="iFI-kB-PaL">
-                                <rect key="frame" x="57" y="144" width="24" height="24"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="pin_green.png" translatesAutoresizingMaskIntoConstraints="NO" id="cTm-UB-dMP">
-                                <rect key="frame" x="213" y="50" width="24" height="24"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="pin_green.png" translatesAutoresizingMaskIntoConstraints="NO" id="poM-Zd-O4B">
-                                <rect key="frame" x="254" y="214" width="24" height="24"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="pin_green.png" translatesAutoresizingMaskIntoConstraints="NO" id="pth-U5-BqR">
-                                <rect key="frame" x="79" y="270" width="24" height="24"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="pin_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="mqs-60-CIu">
-                                <rect key="frame" x="124" y="288" width="24" height="24"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="pin_green.png" translatesAutoresizingMaskIntoConstraints="NO" id="eKY-va-s53">
-                                <rect key="frame" x="266" y="155" width="24" height="24"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="pin_red.png" translatesAutoresizingMaskIntoConstraints="NO" id="NR5-QL-8Gb">
-                                <rect key="frame" x="334" y="126" width="24" height="24"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="pin_red.png" translatesAutoresizingMaskIntoConstraints="NO" id="cGH-r1-IcV">
-                                <rect key="frame" x="371" y="189" width="24" height="24"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="pin_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="pue-Cf-sg1">
-                                <rect key="frame" x="391" y="170" width="24" height="24"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="pin_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="Rbs-wb-Y4o">
-                                <rect key="frame" x="423" y="93" width="24" height="24"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="pin_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="qlR-AH-AKx">
-                                <rect key="frame" x="484" y="214" width="24" height="24"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="pin_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="m5W-2M-Qpm">
-                                <rect key="frame" x="495" y="155" width="24" height="24"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="pin_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="AK5-Je-ruU">
-                                <rect key="frame" x="445" y="144" width="24" height="24"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="pin_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="PZ4-P6-02f">
-                                <rect key="frame" x="425" y="155" width="24" height="24"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="pin_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="6ER-Cj-fKY">
-                                <rect key="frame" x="445" y="163" width="24" height="24"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="pin_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="e0G-JK-1k8">
-                                <rect key="frame" x="457" y="170" width="24" height="24"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="pin_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="upG-rX-gAj">
-                                <rect key="frame" x="514" y="187" width="24" height="24"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="pin_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="2R6-lW-NcX">
-                                <rect key="frame" x="525" y="214" width="24" height="24"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="pin_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="eQA-AP-b7o">
-                                <rect key="frame" x="514" y="150" width="24" height="24"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="pin_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="Pvu-LP-ynp">
-                                <rect key="frame" x="514" y="118" width="24" height="24"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="pin_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="uui-g6-TTh">
-                                <rect key="frame" x="533" y="175" width="24" height="24"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="pin_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="QIs-Tf-L8M">
-                                <rect key="frame" x="546" y="198" width="24" height="24"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="pin_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="nev-ZH-ZGR">
-                                <rect key="frame" x="546" y="220" width="24" height="24"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="pin_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="E3h-ow-heS">
-                                <rect key="frame" x="551" y="288" width="24" height="24"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="pin_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="gLg-sX-Uqm">
-                                <rect key="frame" x="583" y="276" width="24" height="24"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="pin_red.png" translatesAutoresizingMaskIntoConstraints="NO" id="9Kl-I1-BwR">
-                                <rect key="frame" x="283" y="283" width="24" height="24"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="pin_red.png" translatesAutoresizingMaskIntoConstraints="NO" id="0eQ-cV-T9D">
-                                <rect key="frame" x="155" y="61" width="24" height="24"/>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="ML" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" highlighted="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I7b-Ia-rRP">
-                                <rect key="frame" x="136" y="181" width="24" height="21"/>
-                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="14"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="LL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" highlighted="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QkN-bc-jOh">
-                                <rect key="frame" x="262" y="147" width="24" height="21"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Cc" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" highlighted="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cxV-Mm-A6I">
-                                <rect key="frame" x="50" y="136" width="24" height="21"/>
-                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="14"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="SD" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" highlighted="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t5f-Jo-1zX">
-                                <rect key="frame" x="73" y="261" width="24" height="21"/>
-                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="14"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Z" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" highlighted="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JMo-L1-c30">
-                                <rect key="frame" x="258" y="205" width="24" height="21"/>
-                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="14"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="AU" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" highlighted="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lie-SK-nVB">
                                 <rect key="frame" x="274" y="275" width="24" height="21"/>
                                 <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="14"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="l_baja.png" translatesAutoresizingMaskIntoConstraints="NO" id="hM6-PI-bos">
+                                <rect key="frame" x="115" y="206" width="20" height="20"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="s_alto.png" translatesAutoresizingMaskIntoConstraints="NO" id="ry7-Zb-M0j">
+                                <rect key="frame" x="115" y="186" width="20" height="20"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="t_media.png" translatesAutoresizingMaskIntoConstraints="NO" id="evC-Cn-myL">
+                                <rect key="frame" x="131" y="186" width="20" height="20"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="h_media.png" translatesAutoresizingMaskIntoConstraints="NO" id="Tbz-vK-Oon">
+                                <rect key="frame" x="45" y="282" width="20" height="20"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="t_alta.png" translatesAutoresizingMaskIntoConstraints="NO" id="7By-qu-bSL">
+                                <rect key="frame" x="29" y="282" width="20" height="20"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="s_bajo.png" translatesAutoresizingMaskIntoConstraints="NO" id="y7I-kl-n9u">
+                                <rect key="frame" x="29" y="261" width="20" height="20"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="h_alta.png" translatesAutoresizingMaskIntoConstraints="NO" id="aiN-qe-1B3">
+                                <rect key="frame" x="131" y="206" width="20" height="20"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="t_baja.png" translatesAutoresizingMaskIntoConstraints="NO" id="o2V-qb-uTz">
+                                <rect key="frame" x="45" y="261" width="20" height="20"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <outlet property="imgHumedad1" destination="aiN-qe-1B3" id="YG5-Te-xO8"/>
+                        <outlet property="imgHumedad2" destination="Tbz-vK-Oon" id="NRn-jG-6Yr"/>
+                        <outlet property="imgLuz1" destination="hM6-PI-bos" id="cdk-Bh-RP8"/>
+                        <outlet property="imgLuz2" destination="7By-qu-bSL" id="VK2-8A-kbP"/>
+                        <outlet property="imgSonido1" destination="ry7-Zb-M0j" id="y4n-3M-O1s"/>
+                        <outlet property="imgSonido2" destination="y7I-kl-n9u" id="czQ-hT-69T"/>
+                        <outlet property="imgTemperatura1" destination="evC-Cn-myL" id="JfM-98-Vfd"/>
+                        <outlet property="imgTemperatura2" destination="o2V-qb-uTz" id="dFS-Mx-MA7"/>
+                        <segue destination="IQy-vS-Reb" kind="unwind" identifier="unwindToMain" unwindAction="unwindToMain:" id="wzR-2X-vGL"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7XV-Fb-TZs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="IQy-vS-Reb" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="945" y="1668"/>
         </scene>
@@ -512,9 +430,14 @@
         </scene>
     </scenes>
     <resources>
+        <image name="h_alta.png" width="48" height="48"/>
+        <image name="h_media.png" width="48" height="48"/>
+        <image name="l_baja.png" width="48" height="48"/>
         <image name="mapa_uniandes.png" width="789" height="412"/>
-        <image name="pin_green.png" width="24" height="24"/>
-        <image name="pin_grey.png" width="24" height="24"/>
-        <image name="pin_red.png" width="24" height="24"/>
+        <image name="s_alto.png" width="48" height="48"/>
+        <image name="s_bajo.png" width="48" height="48"/>
+        <image name="t_alta.png" width="48" height="48"/>
+        <image name="t_baja.png" width="48" height="48"/>
+        <image name="t_media.png" width="48" height="48"/>
     </resources>
 </document>

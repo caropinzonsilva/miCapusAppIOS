@@ -16,6 +16,7 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
     //var edificios = ["ML","SD","W"]
     var sonidos = ["1","2","3"]
     var sugerenciasDia = [SugerenciaDia]()
+    var edificios = [Edificio]()
     var registros = [Registro]()
     var diasSemanaArray = ["D","L","M","I","J","V","S","SS"]
     var diaSemana: Int = 0
@@ -61,6 +62,8 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
         let hour = myCalendar?.components(.Hour, fromDate: NSDate())
         diaSemana = (myComponent?.weekday)!
         hora = (hour?.hour)!
+        
+        pedirDatosMapa(hora)
         
         print("hoy es ")
         print(diaSemana)
@@ -525,6 +528,11 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
                 
             }
         }
+        else if segue.identifier == "ViewMap" {
+            if let detalle = segue.destinationViewController as? MapaViewController{
+                detalle.edificios = edificios
+            }
+        }
         
     }
     
@@ -568,8 +576,8 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
     
     func pedirSugerencias(dia: Int, hora: Int, ruido: Int, contador: Int) {
         // prepare json data
-        
-        let json = [ "dia":dia, "hora":hora, "ruido":ruido ]
+        let luz = Int(UIScreen.mainScreen().brightness*100)
+        let json = [ "dia":dia, "hora":hora, "ruido":ruido, "luz":luz ]
         do {
             var jsonData = try NSJSONSerialization.dataWithJSONObject(json, options: .PrettyPrinted)
             //print("AVAudioSession is Active")
@@ -625,17 +633,26 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
                         else {
                             let lugar = responseJSON[0]["lugar"] as? Int
                             let ruido = responseJSON[0]["ruido"] as? Int
+                            let luz = responseJSON[0]["luz"] as? Int
+                            let humedad = responseJSON[0]["humedad"] as? Int
+                            let temperatura = responseJSON[0]["temperatura"] as? Int
                             var opcion1 = (0,0,0,0)
                             if responseJSON.count > 1 {
-                                let lugar = responseJSON[1]["lugar"] as? Int
-                                let ruido = responseJSON[1]["ruido"] as? Int
-                                opcion1 = (lugar!,0,ruido!,0)
+                                let lugar1 = responseJSON[1]["lugar"] as? Int
+                                let ruido1 = responseJSON[1]["ruido"] as? Int
+                                let luz1 = responseJSON[0]["luz"] as? Int
+                                let humedad1 = responseJSON[0]["humedad"] as? Int
+                                let temperatura1 = responseJSON[0]["temperatura"] as? Int
+                                opcion1 = (lugar1!,0,ruido1!,0)
                             }
                             var opcion2 = (0,0,0,0)
                             if responseJSON.count > 2 {
-                                let lugar = responseJSON[2]["lugar"] as? Int
-                                let ruido = responseJSON[2]["ruido"] as? Int
-                                opcion2 = (lugar!,0,ruido!,0)
+                                let lugar2 = responseJSON[2]["lugar"] as? Int
+                                let ruido2 = responseJSON[2]["ruido"] as? Int
+                                let luz2 = responseJSON[0]["luz"] as? Int
+                                let humedad2 = responseJSON[0]["humedad"] as? Int
+                                let temperatura2 = responseJSON[0]["temperatura"] as? Int
+                                opcion2 = (lugar2!,0,ruido2!,0)
                             }
                             let sugerenciaDia: SugerenciaDia = SugerenciaDia(edificio: self.mayorEdificios[lugar!], ruido: ruido!, luz: 0, temperatura: 0, humedad: 0, hora: hora, mayor: lugar!, preferencia: 0, opcion1: opcion1, opcion2: opcion2, fecha: NSDate())
                             self.sugerenciasDia.append(sugerenciaDia)
@@ -657,6 +674,59 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
             print(error.localizedDescription)
         }
     }
+    
+    func pedirDatosMapa( hora: Int) {
+        // prepare json data
+        let luz = Int(UIScreen.mainScreen().brightness*100)
+        let json = [ "hora":hora ]
+        do {
+            var jsonData = try NSJSONSerialization.dataWithJSONObject(json, options: .PrettyPrinted)
+            //print("AVAudioSession is Active")
+            
+            // create post request
+            let url = NSURL(string: "http://157.253.205.40/api/darEstadoEdificios")!
+            let request = NSMutableURLRequest(URL: url)
+            request.HTTPMethod = "POST"
+            
+            // insert json data to the request
+            request.HTTPBody = jsonData
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            let task = NSURLSession.sharedSession().dataTaskWithRequest(request){ data,response,error in
+                if error != nil{
+                    print(error!.localizedDescription)
+                    return
+                }
+                do {
+                    if let responseJSON: NSArray = try NSJSONSerialization.JSONObjectWithData(data!, options: []) as! NSArray {
+                        print("Respuesta pedir estado edificios: ")
+                        print(responseJSON)
+                        
+                        var ruido = responseJSON[0]["ruido"] as? Int
+                        var luz = responseJSON[0]["luz"] as? Int
+                        var humedad = responseJSON[0]["humedad"] as? Int
+                        var temperatura = responseJSON[0]["temperatura"] as? Int
+                        let ml = Edificio(edificio: 0, ruido: ruido!, luz: luz!, temperatura: temperatura!, humedad: humedad!)
+                        self.edificios.append(ml)
+                        ruido = responseJSON[1]["ruido"] as? Int
+                        luz = responseJSON[1]["luz"] as? Int
+                        humedad = responseJSON[1]["humedad"] as? Int
+                        temperatura = responseJSON[1]["temperatura"] as? Int
+                        let sd = Edificio(edificio: 1, ruido: ruido!, luz: luz!, temperatura: temperatura!, humedad: humedad!)
+                        self.edificios.append(sd)
+                            
+                    }
+                } catch let error as NSError {
+                    print(error.localizedDescription)
+                }
+            }
+            
+            task.resume()
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+    }
+
     
     func isConnectedToNetwork() -> Bool {
         var zeroAddress = sockaddr_in()
