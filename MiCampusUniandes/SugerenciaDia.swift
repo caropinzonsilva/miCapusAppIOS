@@ -15,11 +15,11 @@ class SugerenciaDia: NSObject {
     let hora: Int
     let mayor: Int
     let preferencia: Int
-    let opcion1: (Int,Int,Int,Int)
-    let opcion2: (Int,Int,Int,Int)
+    let opcion1: (Int,Int,Int,Int,Int,Int,Int)
+    let opcion2: (Int,Int,Int,Int,Int,Int,Int)
     let fecha:NSDate
     
-    init(edificio: String, ruido: Int, luz: Int, temperatura: Int, humedad:Int, hora: Int, mayor: Int, preferencia: Int, opcion1: (Int,Int,Int,Int), opcion2: (Int,Int,Int,Int), fecha: NSDate) {
+    init(edificio: String, ruido: Int, luz: Int, temperatura: Int, humedad:Int, hora: Int, mayor: Int, preferencia: Int, opcion1: (Int,Int,Int,Int,Int,Int,Int), opcion2: (Int,Int,Int,Int,Int,Int,Int), fecha: NSDate) {
         self.edificio = edificio
         self.ruido = ruido
         self.luz = luz

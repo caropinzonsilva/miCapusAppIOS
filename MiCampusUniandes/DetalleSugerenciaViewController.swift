@@ -57,16 +57,26 @@ class DetalleSugerenciaViewController: UIViewController {
             print(i.ruido)
             txtNombreE1.text = mayorEdificios[i.mayor]
             txtSonido1.text = "\(i.ruido) dB - \(nivelesRuido[Int(i.ruido/10)])"
+            txtLuz1.text = "\(i.luz*600)lx"
+            txtTemp1.text = "\(i.temperatura)°C"
+            txtHumedad1.text = "\(i.humedad)%"
             
             imageName = imagenesMayorEdificio[i.opcion1.0]
             imgOpcion2.image = UIImage(named: imageName)!
             txtNombreE2.text = mayorEdificios[i.opcion1.0]
             txtSonido2.text = "\(i.opcion1.2) dB - \(nivelesRuido[Int(i.opcion1.2/10)])"
+            txtLuz2.text = "\(i.opcion1.4*600)lx"
+            txtTemp2.text = "\(i.opcion1.5)°C"
+            txtHumedad2.text = "\(i.opcion1.6)%"
+
             
             imageName = imagenesMayorEdificio[i.opcion2.0]
             imgOpcion3.image = UIImage(named: imageName)!
             txtNombreE3.text = mayorEdificios[i.opcion2.0]
             txtSonido3.text = "\(i.opcion2.2) dB - \(nivelesRuido[Int(i.opcion2.2/10)])"
+            txtLuz3.text = "\(i.opcion2.4*600)lx"
+            txtTemp3.text = "\(i.opcion2.5)°C"
+            txtHumedad3.text = "\(i.opcion2.6)%"
         }
         
     }

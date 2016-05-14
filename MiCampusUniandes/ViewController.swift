@@ -271,10 +271,10 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
         cell.txtEdificio.text = sugerenciasDia[row].edificio
         cell.txtSonido.text = "\(sugerenciasDia[row].ruido)dB - \(nivelesRuido[Int(sugerenciasDia[row].ruido / 10)])"
         
-        cell.txtLuz.text = "\(sugerenciasDia[row].luz)"
-        cell.txtTemp.text = "\(sugerenciasDia[row].temperatura)"
+        cell.txtLuz.text = "\(sugerenciasDia[row].luz*600)lx"
+        cell.txtTemp.text = "\(sugerenciasDia[row].temperatura)°C"
         
-        cell.txtHumedad.text = "\(sugerenciasDia[row].humedad)"
+        cell.txtHumedad.text = "\(sugerenciasDia[row].humedad)%"
         
         var imageName = "sleep"
         if sugerenciasDia[row].mayor != -1 {
@@ -461,7 +461,7 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
     }
     
     //Calculo de sugerencia de lugares, retorna arreglo de Major de beacons
-    func calcularSugerenciaLugares (hora: Int, ruido: Int) -> [(Int,Int,Int,Int)] {
+    func calcularSugerenciaLugares (hora: Int, ruido: Int) -> [(Int,Int,Int,Int,Int,Int,Int)] {
         let connected = isConnectedToNetwork()
         if (connected) {
             
@@ -469,9 +469,9 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
         else {
             
         }
-        var lugaresOcurrencias: [(Int,Int,Int,Int)] = []
+        var lugaresOcurrencias: [(Int,Int,Int,Int,Int,Int,Int)] = []
         for i in 0...self.mayorEdificios.count - 2 {
-            lugaresOcurrencias.append((i,0,ruido,hora))
+            lugaresOcurrencias.append((i,0,ruido,hora,0,0,0))
         }
         for registro in registros {
             if registro.hora == hora && Int(registro.ruido / 10)*10 == ruido && registro.mayor != self.mayorEdificios.count - 1 {
@@ -636,25 +636,25 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
                             let luz = responseJSON[0]["luz"] as? Int
                             let humedad = responseJSON[0]["humedad"] as? Int
                             let temperatura = responseJSON[0]["temperatura"] as? Int
-                            var opcion1 = (0,0,0,0)
+                            var opcion1 = (0,0,0,0,0,0,0)
                             if responseJSON.count > 1 {
                                 let lugar1 = responseJSON[1]["lugar"] as? Int
                                 let ruido1 = responseJSON[1]["ruido"] as? Int
-                                let luz1 = responseJSON[0]["luz"] as? Int
-                                let humedad1 = responseJSON[0]["humedad"] as? Int
-                                let temperatura1 = responseJSON[0]["temperatura"] as? Int
-                                opcion1 = (lugar1!,0,ruido1!,0)
+                                let luz1 = responseJSON[1]["luz"] as? Int
+                                let humedad1 = responseJSON[1]["humedad"] as? Int
+                                let temperatura1 = responseJSON[1]["temperatura"] as? Int
+                                opcion1 = (lugar1!,0,ruido1!,0,luz1!,temperatura1!,humedad1!)
                             }
-                            var opcion2 = (0,0,0,0)
+                            var opcion2 = (0,0,0,0,0,0,0)
                             if responseJSON.count > 2 {
                                 let lugar2 = responseJSON[2]["lugar"] as? Int
                                 let ruido2 = responseJSON[2]["ruido"] as? Int
-                                let luz2 = responseJSON[0]["luz"] as? Int
-                                let humedad2 = responseJSON[0]["humedad"] as? Int
-                                let temperatura2 = responseJSON[0]["temperatura"] as? Int
-                                opcion2 = (lugar2!,0,ruido2!,0)
+                                let luz2 = responseJSON[2]["luz"] as? Int
+                                let humedad2 = responseJSON[2]["humedad"] as? Int
+                                let temperatura2 = responseJSON[2]["temperatura"] as? Int
+                                opcion2 = (lugar2!,0,ruido2!,0,luz2!,temperatura2!,humedad2!)
                             }
-                            let sugerenciaDia: SugerenciaDia = SugerenciaDia(edificio: self.mayorEdificios[lugar!], ruido: ruido!, luz: 0, temperatura: 0, humedad: 0, hora: hora, mayor: lugar!, preferencia: 0, opcion1: opcion1, opcion2: opcion2, fecha: NSDate())
+                            let sugerenciaDia: SugerenciaDia = SugerenciaDia(edificio: self.mayorEdificios[lugar!], ruido: ruido!, luz: luz!, temperatura: temperatura!, humedad: humedad!, hora: hora, mayor: lugar!, preferencia: 0, opcion1: opcion1, opcion2: opcion2, fecha: NSDate())
                             self.sugerenciasDia.append(sugerenciaDia)
                             self.sugerenciasDia = self.sugerenciasDia.sort({ $0.hora < $1.hora })
                             dispatch_async(dispatch_get_main_queue(), {
@@ -701,20 +701,23 @@ class ViewController: UITableViewController, AVAudioRecorderDelegate, CLLocation
                     if let responseJSON: NSArray = try NSJSONSerialization.JSONObjectWithData(data!, options: []) as! NSArray {
                         print("Respuesta pedir estado edificios: ")
                         print(responseJSON)
+                        if responseJSON.count > 1 {
+                            var ruido = responseJSON[0]["ruido"] as? Int
+                            var luz = responseJSON[0]["luz"] as? Int
+                            var humedad = responseJSON[0]["humedad"] as? Int
+                            var temperatura = responseJSON[0]["temperatura"] as? Int
+                            let ml = Edificio(edificio: 0, ruido: ruido!, luz: luz!, temperatura: temperatura!, humedad: humedad!)
+                            self.edificios.append(ml)
+                            if responseJSON.count > 2 {
+                                ruido = responseJSON[1]["ruido"] as? Int
+                                luz = responseJSON[1]["luz"] as? Int
+                                humedad = responseJSON[1]["humedad"] as? Int
+                                temperatura = responseJSON[1]["temperatura"] as? Int
+                                let sd = Edificio(edificio: 1, ruido: ruido!, luz: luz!, temperatura: temperatura!, humedad: humedad!)
+                                self.edificios.append(sd)
+                            }
+                        }
                         
-                        var ruido = responseJSON[0]["ruido"] as? Int
-                        var luz = responseJSON[0]["luz"] as? Int
-                        var humedad = responseJSON[0]["humedad"] as? Int
-                        var temperatura = responseJSON[0]["temperatura"] as? Int
-                        let ml = Edificio(edificio: 0, ruido: ruido!, luz: luz!, temperatura: temperatura!, humedad: humedad!)
-                        self.edificios.append(ml)
-                        ruido = responseJSON[1]["ruido"] as? Int
-                        luz = responseJSON[1]["luz"] as? Int
-                        humedad = responseJSON[1]["humedad"] as? Int
-                        temperatura = responseJSON[1]["temperatura"] as? Int
-                        let sd = Edificio(edificio: 1, ruido: ruido!, luz: luz!, temperatura: temperatura!, humedad: humedad!)
-                        self.edificios.append(sd)
-                            
                     }
                 } catch let error as NSError {
                     print(error.localizedDescription)
